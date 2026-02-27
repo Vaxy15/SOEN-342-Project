@@ -1,0 +1,71 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.5.5">
+  <diagram name="Page-1" id="zz_vpRTI7kSMA3_WnKJp">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="&lt;u&gt;:User&lt;/u&gt;" vertex="1">
+          <mxGeometry height="60" width="30" x="100" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&lt;u&gt;:System&lt;/u&gt;" vertex="1">
+          <mxGeometry height="340" width="100" x="440" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-5" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="114.5" y="440" as="sourcePoint" />
+            <mxPoint x="114.5" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-6" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" target="ts3aWBuL0vt6JQvEATtN-4" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="180" as="sourcePoint" />
+            <mxPoint x="450" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-7" connectable="0" parent="ts3aWBuL0vt6JQvEATtN-6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="startAssigningTaskToProject()" vertex="1">
+          <mxGeometry relative="1" x="0.2016" y="3" as="geometry">
+            <mxPoint x="-42" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-8" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="240" as="sourcePoint" />
+            <mxPoint x="490" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-9" connectable="0" parent="ts3aWBuL0vt6JQvEATtN-8" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="assignTaskToProj(taskID,ProjectID)" vertex="1">
+          <mxGeometry relative="1" x="0.2016" y="3" as="geometry">
+            <mxPoint x="-42" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-10" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="confirmation, task associated with project">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="489.5" y="310" as="sourcePoint" />
+            <mxPoint x="120" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-12" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="120" y="380" as="sourcePoint" />
+            <mxPoint x="490" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ts3aWBuL0vt6JQvEATtN-13" connectable="0" parent="ts3aWBuL0vt6JQvEATtN-12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="finishAssigningTaskToProject()" vertex="1">
+          <mxGeometry relative="1" x="0.2016" y="3" as="geometry">
+            <mxPoint x="-42" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4_wC-DEK0XcOvmNTiP6-1" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="[invalid] task not found or projet not found">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="350" />
+            </Array>
+            <mxPoint x="490" y="310" as="sourcePoint" />
+            <mxPoint x="120" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

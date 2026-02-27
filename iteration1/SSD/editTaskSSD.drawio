@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.5.5">
+  <diagram name="Page-1" id="ILVOxByTZQIyrj3FNk6n">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v4CmaME8tJJLx13onARO-1" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};participant=umlActor;" value="" vertex="1">
+          <mxGeometry height="580" width="20" x="130" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-2" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="&lt;u&gt;:System&lt;/u&gt;" vertex="1">
+          <mxGeometry height="590" width="100" x="490" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="User wants to edit Task" vertex="1">
+          <mxGeometry height="30" width="130" x="80" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-6" edge="1" parent="1" source="v4CmaME8tJJLx13onARO-1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="v4CmaME8tJJLx13onARO-2" value="editTask(taskId)">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="300" />
+            </Array>
+            <mxPoint x="270" y="360" as="sourcePoint" />
+            <mxPoint x="350" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-7" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="updateTask(attribute, newValue)">
+          <mxGeometry relative="1" width="80" x="0.0004" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+            <mxPoint x="139.66666666666652" y="489" as="sourcePoint" />
+            <mxPoint x="539.5" y="489" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-17" edge="1" parent="1" source="v4CmaME8tJJLx13onARO-2" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" target="v4CmaME8tJJLx13onARO-1" value="[valid] task selected">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="350" y="330" />
+            </Array>
+            <mxPoint x="470" y="530" as="sourcePoint" />
+            <mxPoint x="390" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-18" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="[valid] attribute changes">
+          <mxGeometry relative="1" x="0.0004" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="340" y="519" />
+            </Array>
+            <mxPoint x="539.5" y="519" as="sourcePoint" />
+            <mxPoint x="139.66666666666652" y="519" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;u&gt;:User&lt;/u&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="110" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-26" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" value="loop" vertex="1">
+          <mxGeometry height="171" width="460" x="110" y="449" as="geometry" />
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-37" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="saveEdit()">
+          <mxGeometry relative="1" width="80" x="0.0004" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="340.29" y="660" />
+            </Array>
+            <mxPoint x="139.79" y="660" as="sourcePoint" />
+            <mxPoint x="539.79" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4CmaME8tJJLx13onARO-39" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="changes saved, new details">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330.71000000000004" y="690" />
+            </Array>
+            <mxPoint x="540.2099999999999" y="690" as="sourcePoint" />
+            <mxPoint x="140.3766666666665" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="X1UCa0-F0CQqE5T2kp3_-2" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="[invalid] taskid not found">
+          <mxGeometry relative="1" x="-0.0013" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="460" y="400" />
+            </Array>
+            <mxPoint x="540" y="330" as="sourcePoint" />
+            <mxPoint x="139.75" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="X1UCa0-F0CQqE5T2kp3_-3" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="[invalid] invalid value">
+          <mxGeometry relative="1" x="-0.0013" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="460.13" y="590" />
+            </Array>
+            <mxPoint x="540.13" y="520" as="sourcePoint" />
+            <mxPoint x="139.88" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
