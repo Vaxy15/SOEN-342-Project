@@ -36,17 +36,17 @@ A clean index of all Iteration 1 deliverables (document + diagrams).
 
 ## 🔁 System Sequence Diagrams (SSDs)
 
-### 1) Task Creation
+### 1) Task Creation - critical
 <p align="center">
   <img src="public/taskCreationSSD.drawio.png" alt="Task Creation SSD" width="950">
 </p>
 
-### 2) Edit Task
+### 2) Edit Task - critical
 <p align="center">
   <img src="public/editTaskSSD.drawio.png" alt="Edit Task SSD" width="950">
 </p>
 
-### 3) Assign Task to Project
+### 3) Assign Task to Project - critical
 <p align="center">
   <img src="public/assignTaskToProj.drawio.png" alt="Assign Task to Project SSD" width="950">
 </p>
@@ -56,7 +56,7 @@ A clean index of all Iteration 1 deliverables (document + diagrams).
   <img src="public/addASubTaskSSD.drawio.png" alt="Add a Subtask SSD" width="950">
 </p>
 
-### 5) Search Task
+### 5) Search Task - critical
 <p align="center">
   <img src="public/searchTask.drawio.png" alt="Search Task SSD" width="950">
 </p>
