@@ -12,6 +12,9 @@ target/
 *.iml
 *.ipr
 
+#csv testing files
+*.csv
+
 ### Eclipse ###
 .apt_generated
 .classpath

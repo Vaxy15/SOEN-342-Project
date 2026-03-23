@@ -11,13 +11,14 @@ import java.util.Optional;
  */
 public class TagCatalog {
 
+    private static int tagIdCounter = 1;
     private final List<Tag> tags = new ArrayList<>();
 
     public Tag createTag(String name) {
         if (findByName(name).isPresent()) {
             throw new IllegalArgumentException("Tag '" + name + "' already exists.");
         }
-        Tag tag = new Tag(name);
+        Tag tag = new Tag(tagIdCounter++, name);
         tags.add(tag);
         return tag;
     }

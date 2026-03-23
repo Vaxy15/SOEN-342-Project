@@ -12,6 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * Console is the top-level controller (facade) of the system.
@@ -21,7 +22,6 @@ import java.util.Scanner;
 public class Console {
 
     // Owned catalogs (composite aggregation from domain model)
-    private final History             history             = new History();
     private final TaskCatalog         taskCatalog         = new TaskCatalog();
     private final ProjCatalog         projCatalog         = new ProjCatalog();
     private final TagCatalog          tagCatalog          = new TagCatalog();
@@ -81,13 +81,14 @@ public class Console {
         System.out.println("5. Cancel Task");
         System.out.println("6. Add Subtask");
         System.out.println("7. Mark Subtask Complete");
-        System.out.println("8. Remove Subtask");
-        System.out.println("9. Add Tag to Task");
-        System.out.println("10. Remove Tag from Task");
-        System.out.println("11. Assign Task to Project");
-        System.out.println("12. Remove Task from Project");
-        System.out.println("13. View Activity History");
-        System.out.println("14. Assign Collaborator to Task");
+        System.out.println("8. Mark Subtask Cancelled");
+        System.out.println("9. Remove Subtask");
+        System.out.println("10. Add Tag to Task");
+        System.out.println("11. Remove Tag from Task");
+        System.out.println("12. Assign Task to Project");
+        System.out.println("13. Remove Task from Project");
+        System.out.println("14. View Activity History");
+        System.out.println("15. Assign Collaborator to Task");
         System.out.print("Choice: ");
 
         String choice = scanner.nextLine().trim();
@@ -99,13 +100,14 @@ public class Console {
             case "5"  -> cancelTask();
             case "6"  -> addSubtask();
             case "7"  -> markSubtaskComplete();
-            case "8"  -> removeSubtask();
-            case "9"  -> addTagToTask();
-            case "10" -> removeTagFromTask();
-            case "11" -> assignTaskToProject();
-            case "12" -> removeTaskFromProject();
-            case "13" -> viewActivityHistory();
-            case "14" -> assignCollaboratorToTask();
+            case "8"  -> markSubtaskCancelled();
+            case "9"  -> removeSubtask();
+            case "10"  -> addTagToTask();
+            case "11" -> removeTagFromTask();
+            case "12" -> assignTaskToProject();
+            case "13" -> removeTaskFromProject();
+            case "14" -> viewActivityHistory();
+            case "15" -> assignCollaboratorToTask();
             default   -> System.out.println("Invalid option.");
         }
     }
@@ -121,47 +123,53 @@ public class Console {
         String desc = scanner.nextLine().trim();
 
         Priority priority = promptPriority();
-        if (priority == null) return;
-
-        Task task = new Task(name, desc.isEmpty() ? null : desc, priority);
-
-        // Optional due date
-        System.out.print("Due date (yyyy-MM-dd, or blank): ");
-        String dueDateStr = scanner.nextLine().trim();
-        if (!dueDateStr.isBlank()) {
-            try {
-                task.setDueDate(LocalDate.parse(dueDateStr));
-            } catch (DateTimeParseException e) {
-                System.out.println("[Warning] Invalid date format, due date not set.");
-            }
+        if (priority == null){
+            System.out.println("[Error] Priority is required.");
+            return;
         }
 
-        // Optional recurrence
-        System.out.print("Add recurrence pattern? (y/n): ");
-        if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
-            addRecurrencePattern(task);
-        }
+        try{
+            Task task = taskCatalog.createTask(name, desc.isEmpty() ? null : desc, priority);
 
-        // Optional tags (loop)
-        System.out.print("Add tags? (y/n): ");
-        if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
-            boolean addingTags = true;
-            while (addingTags) {
-                System.out.print("Tag name (or blank to stop): ");
-                String tagName = scanner.nextLine().trim();
-                if (tagName.isBlank()) break;
-                Optional<Tag> tag = tagCatalog.findByName(tagName);
-                if (tag.isEmpty()) {
-                    System.out.println("[Error] Tag '" + tagName + "' not found. Create it first.");
-                } else {
-                    task.addTag(tag.get());
-                    System.out.println("[OK] Tag added.");
+            // Optional due date
+            System.out.print("Due date (yyyy-MM-dd, or blank): ");
+            String dueDateStr = scanner.nextLine().trim();
+            if (!dueDateStr.isBlank()) {
+                try {
+                    task.setDueDate(LocalDate.parse(dueDateStr));
+                } catch (DateTimeParseException e) {
+                    System.out.println("[Warning] Invalid date format, due date not set.");
                 }
             }
-        }
 
-        taskCatalog.addTask(task);
-        System.out.println("[OK] Task created:\n" + task);
+            // Optional recurrence
+            System.out.print("Add recurrence pattern? (y/n): ");
+            if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
+                addRecurrencePattern(task);
+            }
+
+            // Optional tags (loop)
+            System.out.print("Add tags? (y/n): ");
+            if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
+                boolean addingTags = true;
+                while (addingTags) {
+                    System.out.print("Tag name (or blank to stop): ");
+                    String tagName = scanner.nextLine().trim();
+                    if (tagName.isBlank()) break;
+                    Optional<Tag> tag = tagCatalog.findByName(tagName);
+                    if (tag.isEmpty()) {
+                        System.out.println("[Error] Tag '" + tagName + "' not found. Create it first.");
+                    } else {
+                        task.addTag(tag.get());
+                        System.out.println("[OK] Tag added.");
+                    }
+                }
+            }
+            System.out.println("[OK] Task created:\n" + task);
+        } catch (IllegalArgumentException e) {
+            System.out.println("[Error] " + e.getMessage());
+            return;
+        }
     }
 
     private void addRecurrencePattern(Task task) {
@@ -239,6 +247,9 @@ public class Console {
         System.out.print("New priority (LOW/MEDIUM/HIGH, blank to keep " + task.getPriority() + "): ");
         String prioStr = scanner.nextLine().trim();
         Priority priority = prioStr.isBlank() ? null : parsePrioritySafe(prioStr);
+        if (priority == null) {
+            System.out.println("[Error] Invalid priority ignored");
+        }
 
         System.out.print("New due date (yyyy-MM-dd, blank to keep): ");
         String dueDateStr = scanner.nextLine().trim();
@@ -248,13 +259,10 @@ public class Console {
             catch (DateTimeParseException e) { System.out.println("[Warning] Invalid date ignored."); }
         }
 
-        task.update(
-            title.isBlank() ? null : title,
-            desc.isBlank() ? null : desc,
-            priority,
-            dueDate,
-            null
-        );
+        task.setTitle(title.isBlank() ? null : title);
+        task.setDescription(desc.isBlank() ? null : desc);
+        task.setPriority(priority);
+        task.setDueDate(dueDate);
         System.out.println("[OK] Task updated:\n" + task);
     }
 
@@ -265,22 +273,19 @@ public class Console {
         if (task == null) return;
 
         // Check if recurring — offer to complete single occurrence
-        if (!task.getOccurrences().isEmpty()) {
+        if (!task.isRecurring()) {
             System.out.println("This is a recurring task. Complete a specific occurrence? (y/n): ");
             if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
                 task.getOccurrences().forEach(System.out::println);
                 System.out.print("Occurrence ID: ");
                 try {
                     int occId = Integer.parseInt(scanner.nextLine().trim());
-                    task.getOccurrences().stream()
-                        .filter(o -> o.getOccurrenceId() == occId)
-                        .findFirst()
-                        .ifPresentOrElse(o -> {
-                            o.complete();
-                            System.out.println("[OK] Occurrence #" + occId + " completed.");
-                        }, () -> System.out.println("[Error] Occurrence not found."));
+                    task.markOccurrenceComplete(occId);
+                    System.out.println("[OK] Occurrence #" + occId + " completed.");
                 } catch (NumberFormatException e) {
                     System.out.println("[Error] Invalid ID.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("[Error] " + e.getMessage());
                 }
                 return;
             }
@@ -312,22 +317,42 @@ public class Console {
     private void markSubtaskComplete() {
         Task task = promptTaskById();
         if (task == null) return;
-        if (task.getSubtasks().isEmpty()) { System.out.println("No subtasks found."); return; }
-        task.getSubtasks().forEach(System.out::println);
+        List<Subtask> incompleteSubtasks = task.getSubtasks().stream().
+                filter((s) -> s.getSubStatus() != TaskStatus.OPEN).toList();
+        if (incompleteSubtasks.isEmpty()) { System.out.println("No incomplete subtasks found."); return; }
+        incompleteSubtasks.forEach(System.out::println);
         System.out.print("Subtask ID: ");
         try {
             int id = Integer.parseInt(scanner.nextLine().trim());
-            task.getSubtasks().stream()
-                .filter(s -> s.getSubtaskId() == id)
-                .findFirst()
-                .ifPresentOrElse(s -> {
-                    task.markSubtaskComplete(s);
-                    System.out.println("[OK] Subtask completed.");
-                    if (task.allSubtasksComplete())
-                        System.out.println("[Info] All subtasks done (parent task NOT auto-completed).");
-                }, () -> System.out.println("[Error] Subtask not found."));
+            task.markSubtaskComplete(id);
+            System.out.println("[OK] Subtask completed.");
+            if (task.allSubtasksComplete())
+                System.out.println("[Info] All subtasks done (parent task NOT auto-completed).");
         } catch (NumberFormatException e) {
             System.out.println("[Error] Invalid ID.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("[Error] " + e.getMessage());
+        }
+    }
+
+    private void markSubtaskCancelled() {
+        Task task = promptTaskById();
+        if (task == null) return;
+        List<Subtask> uncancelledSubtasks = task.getSubtasks().stream().
+                filter((s) -> s.getSubStatus() != TaskStatus.CANCELLED).toList();
+        if (uncancelledSubtasks.isEmpty()) { System.out.println("No subtasks which can be cancelled found."); return; }
+        uncancelledSubtasks.forEach(System.out::println);
+        System.out.print("Subtask ID: ");
+        try {
+            int id = Integer.parseInt(scanner.nextLine().trim());
+            task.markSubtaskCancelled(id);
+            System.out.println("[OK] Subtask cancelled.");
+            if (task.allSubtasksComplete())
+                System.out.println("[Info] All subtasks done (parent task NOT auto-completed).");
+        } catch (NumberFormatException e) {
+            System.out.println("[Error] Invalid ID.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("[Error] " + e.getMessage());
         }
     }
 
@@ -339,15 +364,12 @@ public class Console {
         System.out.print("Subtask ID: ");
         try {
             int id = Integer.parseInt(scanner.nextLine().trim());
-            task.getSubtasks().stream()
-                .filter(s -> s.getSubtaskId() == id)
-                .findFirst()
-                .ifPresentOrElse(s -> {
-                    task.removeSubtask(s);
-                    System.out.println("[OK] Subtask removed.");
-                }, () -> System.out.println("[Error] Subtask not found."));
+            task.removeSubtask(id);
+            System.out.println("[OK] Subtask removed.");
         } catch (NumberFormatException e) {
             System.out.println("[Error] Invalid ID.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("[Error] " + e.getMessage());
         }
     }
 
@@ -433,7 +455,7 @@ public class Console {
     private void viewActivityHistory() {
         Task task = promptTaskById();
         if (task == null) return;
-        history.printTaskHistory(task);
+        History.printTaskHistory(task);
     }
 
     // =========================================================================
@@ -698,6 +720,7 @@ public class Console {
     // =========================================================================
 
     private Task promptTaskById() {
+        //TODO print ids before scan so user knows what hes selecting
         System.out.print("Task ID: ");
         try {
             int id = Integer.parseInt(scanner.nextLine().trim());

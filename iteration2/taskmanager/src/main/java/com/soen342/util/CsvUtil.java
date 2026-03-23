@@ -142,10 +142,12 @@ public class CsvUtil {
                     }
 
                     if (task == null) {
-                        task = new Task(taskName, taskDesc, priority);
+                        task = taskCatalog.createTask(taskName, taskDesc, priority);
                         if (finalDueDate != null) task.setDueDate(finalDueDate);
-                        task.setStatus(status);
-                        taskCatalog.addTask(task);
+                        switch (status) {
+                            case CANCELLED -> task.cancel();
+                            case COMPLETED -> task.complete();
+                        }
                         imported++;
                     }
 

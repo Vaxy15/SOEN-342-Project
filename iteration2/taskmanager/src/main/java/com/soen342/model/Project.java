@@ -5,8 +5,6 @@ import java.util.List;
 
 public class Project {
 
-    private static int idCounter = 1;
-
     private final int projectId;
     private String name;           // must be unique
     private String description;
@@ -14,8 +12,8 @@ public class Project {
     private final List<Task> tasks = new ArrayList<>();
     private final List<Collaborator> collaborators = new ArrayList<>();
 
-    public Project(String name, String description) {
-        this.projectId = idCounter++;
+    public Project(int id, String name, String description) {
+        this.projectId = id;
         this.name = name;
         this.description = description;
     }

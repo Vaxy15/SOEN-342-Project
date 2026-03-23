@@ -27,9 +27,13 @@ public class Subtask {
 
     public void setSubTitle(String subTitle) { this.subTitle = subTitle; }
 
-    public TaskStatus getSubStatus() { return subStatus; }
+    public void complete() { this.subStatus = TaskStatus.COMPLETED; }
 
-    public void setSubStatus(TaskStatus subStatus) { this.subStatus = subStatus; }
+    public void cancel() { this.subStatus = TaskStatus.CANCELLED; }
+
+    public void reopen() { this.subStatus = TaskStatus.OPEN; }
+
+    public TaskStatus getSubStatus() { return subStatus; }
 
     public Collaborator getLinkedCollaborator() { return linkedCollaborator; }
 

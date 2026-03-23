@@ -2,13 +2,11 @@ package com.soen342.model;
 
 public class Tag {
 
-    private static int idCounter = 1;
-
     private final int tagId;
-    private String name;
+    private final String name;
 
-    public Tag(String name) {
-        this.tagId = idCounter++;
+    public Tag(int id, String name) {
+        this.tagId = id;
         this.name = name;
     }
 
@@ -17,8 +15,6 @@ public class Tag {
     public int getTagId() { return tagId; }
 
     public String getName() { return name; }
-
-    public void setName(String name) { this.name = name; }
 
     @Override
     public String toString() {

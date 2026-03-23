@@ -12,6 +12,7 @@ import java.util.Optional;
  */
 public class ProjCatalog {
 
+    private static int projectIdCounter = 1;
     private final List<Project> projects = new ArrayList<>();
 
     public Project createProject(String name, String description) {
@@ -19,7 +20,7 @@ public class ProjCatalog {
             throw new IllegalArgumentException(
                 "A project named '" + name + "' already exists. Project names must be unique.");
         }
-        Project project = new Project(name, description);
+        Project project = new Project(projectIdCounter++, name, description);
         projects.add(project);
         return project;
     }

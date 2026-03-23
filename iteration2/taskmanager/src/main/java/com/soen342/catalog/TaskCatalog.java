@@ -19,12 +19,16 @@ import java.util.stream.Collectors;
  */
 public class TaskCatalog {
 
+    private static int TaskIdCounter = 1;
+
     private final List<Task> tasks = new ArrayList<>();
 
     // --- CRUD ---
 
-    public void addTask(Task task) {
+    public Task createTask(String title, String description, Priority priority) {
+        Task task = new Task(TaskIdCounter++, title, description, priority);
         tasks.add(task);
+        return task;
     }
 
     public Optional<Task> findById(int taskId) {

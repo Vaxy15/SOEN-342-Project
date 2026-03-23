@@ -12,24 +12,24 @@ import java.util.List;
  */
 public class History {
 
-    private final List<ActivityEntry> allEntries = new ArrayList<>();
+    private static final List<ActivityEntry> allEntries = new ArrayList<>();
 
-    public void record(ActivityEntry entry) {
+    public static void record(ActivityEntry entry) {
         allEntries.add(entry);
     }
 
     /**
      * Returns the full activity history for a specific task.
      */
-    public List<ActivityEntry> getHistoryForTask(Task task) {
+    public static List<ActivityEntry> getHistoryForTask(Task task) {
         return task.getActivityHistory();
     }
 
-    public List<ActivityEntry> getAllEntries() {
+    public static List<ActivityEntry> getAllEntries() {
         return allEntries;
     }
 
-    public void printTaskHistory(Task task) {
+    public static void printTaskHistory(Task task) {
         List<ActivityEntry> history = task.getActivityHistory();
         if (history.isEmpty()) {
             System.out.println("No activity history for task: " + task.getTitle());

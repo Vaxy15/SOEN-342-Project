@@ -1,5 +1,6 @@
 package com.soen342.model;
 
+import com.soen342.catalog.History;
 import com.soen342.model.enums.ActivityType;
 import com.soen342.model.enums.Priority;
 import com.soen342.model.enums.TaskStatus;
@@ -8,10 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Task {
-
-    private static int idCounter = 1;
 
     private final int taskId;
     private String title;
@@ -20,6 +20,7 @@ public class Task {
     private LocalDate dueDate;
     private TaskStatus status;
     private Priority priority;
+    private boolean isRecurring = false;
 
     // Associations
     private Project project;                                  // 0..1
@@ -29,14 +30,14 @@ public class Task {
     private final List<ActivityEntry> activityHistory = new ArrayList<>();
     private final List<TaskOccurrence> occurrences = new ArrayList<>();
 
-    public Task(String title, String description, Priority priority) {
+    public Task(int id,String title, String description, Priority priority) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Task title is required.");
         }
         if (priority == null) {
             throw new IllegalArgumentException("Task priority is required.");
         }
-        this.taskId = idCounter++;
+        this.taskId = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -49,16 +50,19 @@ public class Task {
     // --- Status Operations ---
 
     public void complete() {
+        if(StatusCheck(TaskStatus.COMPLETED)) return;
         this.status = TaskStatus.COMPLETED;
-        recordActivity(ActivityType.COMPLETED, "Task '" + title + "' marked as completed.");
+        recordActivity(ActivityType.COMPLETED, "Task '" + title + "' was completed.");
     }
 
     public void cancel() {
+        if(StatusCheck(TaskStatus.CANCELLED)) return;
         this.status = TaskStatus.CANCELLED;
         recordActivity(ActivityType.CANCELLED, "Task '" + title + "' was cancelled.");
     }
 
     public void reopen() {
+        if(StatusCheck(TaskStatus.OPEN)) return;
         this.status = TaskStatus.OPEN;
         recordActivity(ActivityType.UPDATED, "Task '" + title + "' reopened.");
     }
@@ -72,25 +76,51 @@ public class Task {
         return subtask;
     }
 
-    public void removeSubtask(Subtask subtask) {
+    public void removeSubtask(int subtaskId) {
+        Subtask subtask = getSubtask(subtaskId);
         subtasks.remove(subtask);
         recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' removed.");
     }
 
-    public void updateSubtask(Subtask subtask, String newTitle) {
+    public void updateSubtaskTitle(int subtaskId, String newTitle) {
+        Subtask subtask = getSubtask(subtaskId);
         subtask.setSubTitle(newTitle);
         recordActivity(ActivityType.UPDATED, "Subtask updated to '" + newTitle + "'.");
     }
 
-    public void markSubtaskComplete(Subtask subtask) {
-        subtask.setSubStatus(TaskStatus.COMPLETED);
-        // Completing all subtasks does NOT auto-complete the parent
+    public void markSubtaskComplete(int subtaskId) {
+        Subtask subtask = getSubtask(subtaskId);
+        subtask.complete();
         recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' completed.");
+    }
+
+    public void markSubtaskCancelled(int subtaskId) {
+        Subtask subtask = getSubtask(subtaskId);
+        subtask.cancel();
+        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' completed.");
+    }
+
+    public void markSubtaskReopen(int subtaskId) {
+        Subtask subtask = getSubtask(subtaskId);
+        subtask.reopen();
+        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' reopened.");
     }
 
     public boolean allSubtasksComplete() {
         return !subtasks.isEmpty() &&
                subtasks.stream().allMatch(s -> s.getSubStatus() == TaskStatus.COMPLETED);
+    }
+
+    public void markOccurrenceComplete(int occurrenceId) {
+        TaskOccurrence occurrence = getOccurrence(occurrenceId);
+        occurrence.complete();
+        recordActivity(ActivityType.UPDATED, "Occurrence " + occurrence.getDueDate() + " completed.");
+    }
+
+    public void markOccurrenceCancelled(int occurrenceId) {
+        TaskOccurrence occurrence = getOccurrence(occurrenceId);
+        occurrence.cancel();
+        recordActivity(ActivityType.UPDATED, "Occurrence " + occurrence.getDueDate() + " cancelled.");
     }
 
     // --- Tag Management ---
@@ -110,9 +140,11 @@ public class Task {
     // --- Recurrence ---
 
     public void setRecurrencePattern(RecurrencePattern pattern) {
+        this.isRecurring = true;
+        this.dueDate = null;
         this.recurrencePattern = pattern;
         generateOccurrences();
-        recordActivity(ActivityType.UPDATED, "Recurrence pattern set: " + pattern);
+        recordActivity(ActivityType.UPDATED, "Recurrence pattern set: " + pattern +", due date removed");
     }
 
     private void generateOccurrences() {
@@ -155,39 +187,27 @@ public class Task {
     // --- Activity History ---
 
     private void recordActivity(ActivityType type, String description) {
-        activityHistory.add(new ActivityEntry(type, description));
+        ActivityEntry entry = new ActivityEntry(type, "task #"+this.taskId+": "+description);
+        History.record(entry);
+        activityHistory.add(entry);
     }
-
-    // --- Update Fields ---
-
-    public void update(String newTitle, String newDescription, Priority newPriority,
-                       LocalDate newDueDate, TaskStatus newStatus) {
-        if (newTitle != null && !newTitle.isBlank()) this.title = newTitle;
-        if (newDescription != null)                  this.description = newDescription;
-        if (newPriority != null)                     this.priority = newPriority;
-        if (newDueDate != null)                      this.dueDate = newDueDate;
-        if (newStatus != null) {
-            switch (newStatus) {
-                case COMPLETED -> complete();
-                case CANCELLED -> cancel();
-                case OPEN      -> reopen();
-            }
-            return; // complete/cancel/reopen already record activity
-        }
-        recordActivity(ActivityType.UPDATED, "Task '" + title + "' updated.");
-    }
-
     // --- Getters & Setters ---
 
     public int getTaskId() { return taskId; }
 
     public String getTitle() { return title; }
 
-    public void setTitle(String title) { this.title = title; }
+    public void setTitle(String title) {
+        this.title = title;
+        recordActivity(ActivityType.UPDATED, "Title updated.");
+    }
 
     public String getDescription() { return description; }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+        recordActivity(ActivityType.UPDATED, "Description updated.");
+    }
 
     public LocalDateTime getCreatedOn() { return createdOn; }
 
@@ -195,20 +215,26 @@ public class Task {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
-        recordActivity(ActivityType.UPDATED, "Due date set to " + dueDate + ".");
+        this.recurrencePattern = null;
+        this.isRecurring = false;
+        recordActivity(ActivityType.UPDATED, "Due date set to " + dueDate + ", recurrence pattern removed.");
     }
 
     public TaskStatus getStatus() { return status; }
 
-    public void setStatus(TaskStatus status) { this.status = status; }
-
     public Priority getPriority() { return priority; }
 
-    public void setPriority(Priority priority) { this.priority = priority; }
+    public void setPriority(Priority priority) {
+        recordActivity(ActivityType.UPDATED, "Priority set to " + priority + ".");
+        this.priority = priority;
+    }
 
     public Project getProject() { return project; }
 
+    //TODO check if project changing should be a responsibility of the task?
     public void setProject(Project project) { this.project = project; }
+
+    public boolean isRecurring() { return isRecurring; }
 
     public RecurrencePattern getRecurrencePattern() { return recurrencePattern; }
 
@@ -238,5 +264,21 @@ public class Task {
               .append("/").append(subtasks.size()).append(" subtasks done");
         }
         return sb.toString();
+    }
+
+    //utils
+    private Subtask getSubtask(int subtaskId) {
+        List<Subtask> subtasksWithId = subtasks.stream().filter((s) -> s.getSubtaskId() == subtaskId).toList();
+        if (subtasksWithId.isEmpty()) throw new IllegalArgumentException("Subtask id:" + subtaskId + ", not found.");
+        return subtasksWithId.getFirst();
+    }
+    private TaskOccurrence getOccurrence(int occurrenceId) {
+        List<TaskOccurrence> subtasksWithId = occurrences.stream().filter((o) -> o.getOccurrenceId() == occurrenceId).toList();
+        if (subtasksWithId.isEmpty()) throw new IllegalArgumentException("Occurrence id:" + occurrenceId + ", not found.");
+        return subtasksWithId.getFirst();
+    }
+
+    private boolean StatusCheck(TaskStatus status) {
+        return this.status == status;
     }
 }
