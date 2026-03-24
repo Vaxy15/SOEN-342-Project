@@ -33,32 +33,43 @@ A clean index of all Iteration 2 deliverables (document + diagrams).
 <p align="center">
   <img src="public/CreateTaskUpdatedSSD.png" alt="Task Creation SSD" width="950">
 </p>
+
 ### 2) updated - Edit Task
 <p align="center">
   <img src="public/searchTaskUpdatedSSD.png" alt="Edit Task SSD" width="950">
 </p>
+
 ### 3) new - Import CSV
 <p align="center">
   <img src="public/importCSVSSD.png" alt="Assign Task to Project SSD" width="950">
 </p>
+
 ### 4) new - Link Collaborator
 <p align="center">
   <img src="public/LinkCollaboratorSSD.png" alt="Add a Subtask SSD" width="950">
 </p>
+
 ## Interaction Diagrams
+
+### 1) CreateTask
 <p align="center">
   <img src="public/CreateTaskSequenceDiagram.png" alt="Search Task SSD" width="950">
 </p>
+### 2) SearchTasks
 <p align="center">
   <img src="public/searchTaskSequenceDiagram.png" alt="Search Task SSD" width="950">
 </p>
+
+### 3) CreateSubtask
 <p align="center">
   <img src="public/CreateSubtaskSequenceDiagram.png" alt="Search Task SSD" width="950">
 </p>
+
 ## Class Diagram
 <p align="center">
   <img src="public/Soen-342_ClassDiagram.png" alt="Search Task SSD" width="950">
 </p>
+
 ## 🗂️ Editable Source Files
 - Use case + domain model sources:
   - `UseCase.drawio`
