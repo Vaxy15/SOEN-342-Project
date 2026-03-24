@@ -18,18 +18,22 @@ A clean index of all Iteration 2 deliverables (document + diagrams).
 <p align="center">
   <img src="public/UML UseCase Diagaram (Core Tasks) (1).png" alt="Use Case Diagram" width="950">
 </p>
+
 ---
+
 ## 🧠 Domain Model
 <p align="center">
   <img src="public/DomainModel-II.png" alt="Domain Model" width="950">
 </p>
+
 ---
+
 ## 🔁 Updated System Sequence Diagrams (SSDs)
-### 1) Task Creation - critical
+### 1) updated - Task Creation
 <p align="center">
   <img src="public/CreateTaskUpdatedSSD.png" alt="Task Creation SSD" width="950">
 </p>
-### 2) Edit Task - critical
+### 2) updated - Edit Task
 <p align="center">
   <img src="public/searchTaskUpdatedSSD.png" alt="Edit Task SSD" width="950">
 </p>
