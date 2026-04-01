@@ -12,8 +12,9 @@ target/
 *.iml
 *.ipr
 
-#csv testing files
+# export files
 *.csv
+*.ics
 
 ### Eclipse ###
 .apt_generated

@@ -253,6 +253,7 @@ public class Console {
 
         System.out.print("New priority (LOW/MEDIUM/HIGH, blank to keep " + task.getPriority() + "): ");
         String prioStr = scanner.nextLine().trim();
+
         Priority priority = prioStr.isBlank() ? null : parsePrioritySafe(prioStr);
         if (priority == null) {
             System.out.println("[Error] Invalid priority ignored");
@@ -268,8 +269,8 @@ public class Console {
 
         task.setTitle(title.isBlank() ? null : title);
         task.setDescription(desc.isBlank() ? null : desc);
-        task.setPriority(priority);
-        task.setDueDate(dueDate);
+        task.setPriority(priority == null ? task.getPriority() : priority);
+        task.setDueDate(dueDate == null ? task.getDueDate() : dueDate);
         System.out.println("[OK] Task updated:\n" + task);
     }
 
