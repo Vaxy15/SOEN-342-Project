@@ -3,12 +3,17 @@ package com.soen342.console;
 import com.soen342.catalog.*;
 import com.soen342.model.*;
 import com.soen342.model.enums.*;
+import com.soen342.util.CalendarUtil;
 import com.soen342.util.CsvUtil;
+import com.soen342.util.ExportGateway;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -50,6 +55,7 @@ public class Console {
                 case "4"  -> handleCollaboratorMenu();
                 case "5"  -> handleSearchMenu();
                 case "6"  -> handleCsvMenu();
+                case "7"  ->  handleICSMenu();
                 case "0"  -> { running = false; System.out.println("Goodbye!"); }
                 default   -> System.out.println("Invalid option.");
             }
@@ -64,6 +70,7 @@ public class Console {
         System.out.println("4. Collaborators");
         System.out.println("5. Search & View Tasks");
         System.out.println("6. CSV Import / Export");
+        System.out.println("7. ICS Export");
         System.out.println("0. Exit");
         System.out.print("Choice: ");
     }
@@ -598,6 +605,30 @@ public class Console {
 
     private void handleSearchMenu() {
         System.out.println("\n--- SEARCH & VIEW TASKS ---");
+        List<Task> results = taskSearch();
+
+        if (results.isEmpty()) {
+            System.out.println("\nNo tasks found matching your criteria.");
+        } else {
+            System.out.println("\n--- Results (" + results.size() + " tasks) ---");
+            results.forEach(System.out::println);
+        }
+
+        // Optional CSV export
+        System.out.print("\nExport results to CSV? (y/n): ");
+        if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
+            System.out.print("Directory path: ");
+            String dir = scanner.nextLine().trim();
+            try {
+                CsvUtil.exportToCSV(results, dir);
+            } catch (IOException e) {
+                System.out.println("[Error] " + e.getMessage());
+            }
+        }
+    }
+
+    private List<Task> taskSearch(){
+
         System.out.println("(Press Enter on any filter to skip it)");
 
         TaskCatalog.SearchCriteria criteria = new TaskCatalog.SearchCriteria();
@@ -624,8 +655,8 @@ public class Console {
         String projName = scanner.nextLine().trim();
         if (!projName.isBlank()) {
             projCatalog.findByName(projName).ifPresentOrElse(
-                criteria::project,
-                () -> System.out.println("[Warning] Project not found, filter ignored.")
+                    criteria::project,
+                    () -> System.out.println("[Warning] Project not found, filter ignored.")
             );
         }
 
@@ -633,8 +664,8 @@ public class Console {
         String tagName = scanner.nextLine().trim();
         if (!tagName.isBlank()) {
             tagCatalog.findByName(tagName).ifPresentOrElse(
-                criteria::tag,
-                () -> System.out.println("[Warning] Tag not found, filter ignored.")
+                    criteria::tag,
+                    () -> System.out.println("[Warning] Tag not found, filter ignored.")
             );
         }
 
@@ -658,26 +689,7 @@ public class Console {
         String order = scanner.nextLine().trim();
         if (!order.isBlank()) criteria.orderBy(order.toLowerCase());
 
-        List<Task> results = taskCatalog.search(criteria);
-
-        if (results.isEmpty()) {
-            System.out.println("\nNo tasks found matching your criteria.");
-        } else {
-            System.out.println("\n--- Results (" + results.size() + " tasks) ---");
-            results.forEach(System.out::println);
-        }
-
-        // Optional CSV export
-        System.out.print("\nExport results to CSV? (y/n): ");
-        if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
-            System.out.print("Directory path: ");
-            String dir = scanner.nextLine().trim();
-            try {
-                CsvUtil.exportToCSV(results, dir);
-            } catch (IOException e) {
-                System.out.println("[Error] " + e.getMessage());
-            }
-        }
+        return taskCatalog.search(criteria);
     }
 
     // =========================================================================
@@ -713,6 +725,89 @@ public class Console {
             }
             default -> System.out.println("Invalid option.");
         }
+    }
+
+    // =========================================================================
+    // ICS EXPORT Menu
+    // =========================================================================
+
+    private void handleICSMenu() {
+        System.out.println("\n--- ICS EXPORT ---");
+        System.out.println("1. Export Single task");
+        System.out.println("2. Export all tasks");
+        System.out.println("3. Export task search");
+        System.out.print("Choice: ");
+
+        String choice = scanner.nextLine().trim();
+        switch (choice) {
+            case "1" -> {
+               handleExportSingleTask();
+            }
+            case "2" -> {
+               handleExportAllTasks();
+            }
+            case "3" -> {
+               handleICSExportFromSearch();
+            }
+            default -> System.out.println("Invalid option.");
+        }
+    }
+
+    private void handleExportSingleTask(){
+        Task task = promptTaskById();
+        if (task == null) return;
+        System.out.println(task);
+        ICSExport(List.of(task));
+    }
+
+    private void handleExportAllTasks(){
+
+        List<Task> tasks = taskCatalog.getAllTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("\nNo tasks found.");
+            return;
+        }
+        ICSExport(tasks);
+    }
+
+    private void handleICSExportFromSearch() {
+        System.out.println("\n--- SEARCH TASKS ---");
+        List<Task> tasks = taskSearch();
+        if (tasks.isEmpty()) {
+            System.out.println("\nNo tasks found matching your criteria.");
+            return;
+        }
+
+        System.out.println("\n--- Results (" + tasks.size() + " tasks) ---");
+        tasks.forEach(System.out::println);
+        System.out.println("\ncontinue to export? (y/n):");
+        if (scanner.nextLine().trim().equalsIgnoreCase("y"))
+            ICSExport(tasks);
+    }
+
+    private void ICSExport(List<Task> tasks) {
+
+        String cwd = System.getProperty("user.dir");
+        System.out.printf("file path (relative to %s) :", cwd);
+        String path = scanner.nextLine().trim();
+        if (path.isBlank()) {
+            System.out.println("[Error] File path required.");
+            return;
+        }
+        if (!path.endsWith(".ics")) {
+            path += ".ics";
+        }
+
+        System.out.println("Exporting...");
+        ExportGateway exportUtil = new CalendarUtil();
+        try{
+            exportUtil.exportTasksICS(tasks,path);
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("[Error] File already exists.");
+        } catch (IOException e) {
+            System.out.println("[Error] " + e.getMessage());
+        }
+        System.out.println("Successfully exported to " + path + "!");
     }
 
     // =========================================================================
