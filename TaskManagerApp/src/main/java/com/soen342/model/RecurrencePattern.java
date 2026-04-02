@@ -27,6 +27,17 @@ public class RecurrencePattern {
         this.endDate = endDate;
     }
 
+    private RecurrencePattern(int id, RecurrenceType type, int interval, LocalDate startDate, LocalDate endDate, String selectedDays, int dayOfMonth) {
+        this.patternId = id;
+        this.type = type;
+        this.interval = interval;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.selectedDays = selectedDays;
+        this.dayOfMonth = dayOfMonth;
+        idCounter = Math.max(idCounter, id + 1);
+    }
+
     /**
      * Generates all occurrence due dates based on the recurrence pattern.
      */
@@ -96,4 +107,10 @@ public class RecurrencePattern {
         return "RecurrencePattern #" + patternId + " [" + type + ", every " + interval
                 + ", " + startDate + " to " + endDate + "]";
     }
+
+    //raw data setting - bypasses business logic
+    public static RecurrencePattern createRecurrencePatternRaw(int id, RecurrenceType type, int interval, LocalDate startDate, LocalDate endDate, String selectedDays, int dayOfMonth) {
+        return new RecurrencePattern(id, type, interval, startDate, endDate, selectedDays, dayOfMonth);
+    }
+
 }

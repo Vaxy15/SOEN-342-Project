@@ -20,6 +20,12 @@ public class ActivityEntry {
         this.description = description;
     }
 
+    public ActivityEntry(ActivityType type, String description, LocalDateTime timeStamp) {
+        this.type = type;
+        this.timeStamp = timeStamp;
+        this.description = description;
+    }
+
     // --- Getters ---
 
     public ActivityType getType() { return type; }

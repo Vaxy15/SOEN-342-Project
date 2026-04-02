@@ -3,6 +3,7 @@ package com.soen342.console;
 import com.soen342.catalog.*;
 import com.soen342.model.*;
 import com.soen342.model.enums.*;
+import com.soen342.persistence.DBManager;
 import com.soen342.util.CalendarUtil;
 import com.soen342.util.CsvUtil;
 import com.soen342.util.ExportGateway;
@@ -10,6 +11,7 @@ import com.soen342.util.ExportGateway;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -31,6 +33,7 @@ public class Console {
     private final ProjCatalog         projCatalog         = new ProjCatalog();
     private final TagCatalog          tagCatalog          = new TagCatalog();
     private final CollaboratorCatalog collaboratorCatalog = new CollaboratorCatalog();
+    private final History             history             = new History();
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -45,6 +48,18 @@ public class Console {
         System.out.println("========================================");
 
         boolean running = true;
+
+        //sync catalogs with db
+        try{
+            DBManager.loadIntoCatalogs(projCatalog,collaboratorCatalog,taskCatalog,tagCatalog, history);
+        } catch (SQLException e){
+            System.out.println("Error loading data from database: " + e.getMessage());
+            running = false;
+        }
+
+        //set history Logging
+        Task.setHistory(history);
+
         while (running) {
             printMainMenu();
             String choice = scanner.nextLine().trim();
@@ -281,7 +296,7 @@ public class Console {
         if (task == null) return;
 
         // Check if recurring — offer to complete single occurrence
-        if (!task.isRecurring()) {
+        if (task.isRecurring()) {
             System.out.println("This is a recurring task. Complete a specific occurrence? (y/n): ");
             if (scanner.nextLine().trim().equalsIgnoreCase("y")) {
                 task.getOccurrences().forEach(System.out::println);
@@ -463,7 +478,7 @@ public class Console {
     private void viewActivityHistory() {
         Task task = promptTaskById();
         if (task == null) return;
-        History.printTaskHistory(task);
+        history.printTaskHistory(task);
     }
 
     // =========================================================================

@@ -1,5 +1,8 @@
 package com.soen342.model;
 
+import com.soen342.persistence.DBUtil;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,25 +25,46 @@ public class Project {
 
     public void addTask(Task task) {
         if (!tasks.contains(task)) {
+            try {
+                DBUtil.editTask(task); // persists the project_id FK
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to link task to project, operation aborted.", e);
+            }
             tasks.add(task);
             task.setProject(this);
         }
     }
 
     public void removeTask(Task task) {
-        tasks.remove(task);
         task.setProject(null);
+        try {
+            DBUtil.editTask(task);
+        } catch (SQLException e) {
+            task.setProject(this);
+            throw new RuntimeException("Failed to unlink task from project, operation aborted.", e);
+        }
+        tasks.remove(task);
     }
 
     // --- Collaborator Management ---
 
     public void addCollaborator(Collaborator collaborator) {
         if (!collaborators.contains(collaborator)) {
+            try {
+                DBUtil.linkCollaboratorToProject(collaborator.getCollaboratorId(), this.projectId);
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to link collaborator to project, operation aborted.", e);
+            }
             collaborators.add(collaborator);
         }
     }
 
     public void removeCollaborator(Collaborator collaborator) {
+        try {
+            DBUtil.unlinkCollaboratorFromProject(collaborator.getCollaboratorId());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to unlink collaborator from project, operation aborted.", e);
+        }
         collaborators.remove(collaborator);
     }
 
@@ -70,4 +94,12 @@ public class Project {
                 + (description != null && !description.isEmpty() ? " - " + description : "")
                 + " (" + tasks.size() + " tasks)";
     }
+
+    //raw data setting for db - skips business logic
+    public void addTaskRaw(Task task) {
+        this.tasks.add(task);
+    }
+     public void addCollaboratorRaw(Collaborator collaborator) {
+        this.collaborators.add(collaborator);
+     }
 }

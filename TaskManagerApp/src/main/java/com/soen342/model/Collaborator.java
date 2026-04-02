@@ -2,13 +2,13 @@ package com.soen342.model;
 
 import com.soen342.model.enums.CollaboratorCategory;
 import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Collaborator {
-
-    private static int idCounter = 1;
 
     private final int collaboratorId;
     private String name;
@@ -17,8 +17,8 @@ public class Collaborator {
     // All subtasks assigned to this collaborator
     private final List<Subtask> assignedSubtasks = new ArrayList<>();
 
-    public Collaborator(String name, CollaboratorCategory category) {
-        this.collaboratorId = idCounter++;
+    public Collaborator(int id, String name, CollaboratorCategory category) {
+        this.collaboratorId = id;
         this.name = name;
         this.category = category;
     }
@@ -65,11 +65,29 @@ public class Collaborator {
 
     public String getName() { return name; }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        String old = this.name;
+        this.name = name;
+        try {
+            DBUtil.editCollaborator(this);
+        } catch (SQLException e) {
+            this.name = old;
+            throw new RuntimeException("Failed to update collaborator, operation aborted.", e);
+        }
+    }
 
     public CollaboratorCategory getCategory() { return category; }
 
-    public void setCategory(CollaboratorCategory category) { this.category = category; }
+    public void setCategory(CollaboratorCategory category) {
+        CollaboratorCategory old = this.category;
+        this.category = category;
+        try {
+            DBUtil.editCollaborator(this);
+        } catch (SQLException e) {
+            this.category = old;
+            throw new RuntimeException("Failed to update collaborator, operation aborted.", e);
+        }
+    }
 
     public List<Subtask> getAssignedSubtasks() { return assignedSubtasks; }
 
@@ -78,5 +96,10 @@ public class Collaborator {
         return "Collaborator #" + collaboratorId + ": " + name
                 + " [" + category + ", open: " + countOpenTasks()
                 + "/" + category.getMaxOpenTasks() + "]";
+    }
+
+    //raw data setting for db - skips business logic
+    public void addSubtaskRaw(Subtask subtask) {
+        this.assignedSubtasks.add(subtask);
     }
 }

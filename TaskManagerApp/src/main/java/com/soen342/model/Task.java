@@ -4,12 +4,13 @@ import com.soen342.catalog.History;
 import com.soen342.model.enums.ActivityType;
 import com.soen342.model.enums.Priority;
 import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBUtil;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Task {
 
@@ -21,6 +22,11 @@ public class Task {
     private TaskStatus status;
     private Priority priority;
     private boolean isRecurring = false;
+
+    private static History history;
+    public static void setHistory(History history) {
+        Task.history = history;
+    }
 
     // Associations
     private Project project;                                  // 0..1
@@ -47,23 +53,62 @@ public class Task {
         recordActivity(ActivityType.CREATED, "Task '" + title + "' created.");
     }
 
+    private Task(int id,String title, String description, Priority priority, TaskStatus status, boolean isRecurring, LocalDate dueDate, LocalDateTime createdOn) {
+
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Task title is required.");
+        }
+        if (priority == null) {
+            throw new IllegalArgumentException("Task priority is required.");
+        }
+        this.taskId = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.isRecurring = isRecurring;
+        this.status = status;
+        this.dueDate = dueDate;
+        this.createdOn = createdOn;
+    }
+
     // --- Status Operations ---
 
     public void complete() {
         if(StatusCheck(TaskStatus.COMPLETED)) return;
+        TaskStatus prev = getStatus();
         this.status = TaskStatus.COMPLETED;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.status = prev;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
         recordActivity(ActivityType.COMPLETED, "Task '" + title + "' was completed.");
     }
 
     public void cancel() {
         if(StatusCheck(TaskStatus.CANCELLED)) return;
+        TaskStatus prev = getStatus();
         this.status = TaskStatus.CANCELLED;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.status = prev;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
         recordActivity(ActivityType.CANCELLED, "Task '" + title + "' was cancelled.");
     }
 
     public void reopen() {
-        if(StatusCheck(TaskStatus.OPEN)) return;
+        if (StatusCheck(TaskStatus.OPEN)) return;
+        TaskStatus prev = this.status;
         this.status = TaskStatus.OPEN;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.status = prev;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
         recordActivity(ActivityType.UPDATED, "Task '" + title + "' reopened.");
     }
 
@@ -71,13 +116,24 @@ public class Task {
 
     public Subtask addSubtask(String subTitle) {
         Subtask subtask = new Subtask(subTitle);
+        try {
+            DBUtil.saveSubtask(subtask, this.taskId);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to save subtask, operation aborted.", e);
+        }
         subtasks.add(subtask);
         recordActivity(ActivityType.UPDATED, "Subtask '" + subTitle + "' added.");
         return subtask;
+
     }
 
     public void removeSubtask(int subtaskId) {
         Subtask subtask = getSubtask(subtaskId);
+        try {
+            DBUtil.deleteSubtask(subtaskId);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete subtask, operation aborted.", e);
+        }
         subtasks.remove(subtask);
         recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' removed.");
     }
@@ -91,7 +147,7 @@ public class Task {
     public void markSubtaskComplete(int subtaskId) {
         Subtask subtask = getSubtask(subtaskId);
         subtask.complete();
-        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' completed.");
+        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' cancelled.");
     }
 
     public void markSubtaskCancelled(int subtaskId) {
@@ -127,12 +183,22 @@ public class Task {
 
     public void addTag(Tag tag) {
         if (!tags.contains(tag)) {
+            try {
+                DBUtil.addTagToTask(this.taskId, tag.getTagId());
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to add tag, operation aborted.", e);
+            }
             tags.add(tag);
             recordActivity(ActivityType.UPDATED, "Tag '" + tag.getName() + "' added.");
         }
     }
 
     public void removeTag(Tag tag) {
+        try {
+            DBUtil.removeTagFromTask(this.taskId, tag.getTagId());
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to remove tag, operation aborted.", e);
+        }
         tags.remove(tag);
         recordActivity(ActivityType.UPDATED, "Tag '" + tag.getName() + "' removed.");
     }
@@ -144,7 +210,14 @@ public class Task {
         this.dueDate = null;
         this.recurrencePattern = pattern;
         generateOccurrences();
-        recordActivity(ActivityType.UPDATED, "Recurrence pattern set: " + pattern +", due date removed");
+        recordActivity(ActivityType.UPDATED, "Recurrence pattern set.");
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.isRecurring = false;
+            this.recurrencePattern = null;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
     }
 
     private void generateOccurrences() {
@@ -172,15 +245,15 @@ public class Task {
             );
         }
         // Validate capacity (throws if over limit)
-        collaborator.assignSubtask(new Subtask("Task for " + collaborator.getName()));
-
-        // The last subtask added to collaborator is the linked one
-        Subtask linked = collaborator.getAssignedSubtasks()
-                .get(collaborator.getAssignedSubtasks().size() - 1);
+        Subtask linked = new Subtask("Task for " + collaborator.getName());
+        collaborator.assignSubtask(linked);
+        try {
+            DBUtil.saveSubtask(linked, this.taskId);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to save subtask, operation aborted.", e);
+        }
         subtasks.add(linked);
-
-        recordActivity(ActivityType.UPDATED,
-            "Collaborator '" + collaborator.getName() + "' assigned via subtask.");
+        recordActivity(ActivityType.UPDATED, "Collaborator '" + collaborator.getName() + "' assigned via subtask.");
         return linked;
     }
 
@@ -188,7 +261,7 @@ public class Task {
 
     private void recordActivity(ActivityType type, String description) {
         ActivityEntry entry = new ActivityEntry(type, "task #"+this.taskId+": "+description);
-        History.record(entry);
+        history.record(entry);
         activityHistory.add(entry);
     }
     // --- Getters & Setters ---
@@ -198,14 +271,28 @@ public class Task {
     public String getTitle() { return title; }
 
     public void setTitle(String title) {
+        String oldTitle = this.title;
         this.title = title;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.title = oldTitle;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
         recordActivity(ActivityType.UPDATED, "Title updated.");
     }
 
     public String getDescription() { return description; }
 
     public void setDescription(String description) {
+        String oldDescription = this.description;
         this.description = description;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.description = oldDescription;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
         recordActivity(ActivityType.UPDATED, "Description updated.");
     }
 
@@ -214,9 +301,20 @@ public class Task {
     public LocalDate getDueDate() { return dueDate; }
 
     public void setDueDate(LocalDate dueDate) {
+        LocalDate oldDueDate = this.dueDate;
+        RecurrencePattern oldPattern = this.recurrencePattern;
+        boolean oldIsRecurring = this.isRecurring;
         this.dueDate = dueDate;
         this.recurrencePattern = null;
         this.isRecurring = false;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.dueDate = oldDueDate;
+            this.recurrencePattern = oldPattern;
+            this.isRecurring = oldIsRecurring;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
         recordActivity(ActivityType.UPDATED, "Due date set to " + dueDate + ", recurrence pattern removed.");
     }
 
@@ -225,14 +323,34 @@ public class Task {
     public Priority getPriority() { return priority; }
 
     public void setPriority(Priority priority) {
-        recordActivity(ActivityType.UPDATED, "Priority set to " + priority + ".");
+        Priority oldPriority = this.priority;
         this.priority = priority;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.priority = oldPriority;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
+        recordActivity(ActivityType.UPDATED, "Priority set to " + priority + ".");
     }
 
     public Project getProject() { return project; }
 
     //TODO check if project changing should be a responsibility of the task?
-    public void setProject(Project project) { this.project = project; }
+    public void setProject(Project project) {
+        Project oldProject = this.project;
+        this.project = project;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.project = oldProject;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
+        if (project != null)
+            recordActivity(ActivityType.UPDATED, "Project set to " + project.getName() + ".");
+        else
+            recordActivity(ActivityType.UPDATED, "Task removed from project.");
+    }
 
     public boolean isRecurring() { return isRecurring; }
 
@@ -280,5 +398,38 @@ public class Task {
 
     private boolean StatusCheck(TaskStatus status) {
         return this.status == status;
+    }
+
+    //raw data setting for db - skips business logic
+
+    public static Task createTaskRaw(int id, String title, String description, Priority priority, TaskStatus status, boolean isRecurring, LocalDate dueDate, LocalDateTime createdOn) {
+        return new Task(id, title, description, priority, status, isRecurring, dueDate, createdOn);
+    }
+
+    public Subtask addSubtaskRaw(int id, String subTitle, TaskStatus status) {
+        Subtask subtask = new Subtask(id, subTitle, status);
+        subtasks.add(subtask);
+        return subtask;
+    }
+
+    public RecurrencePattern addRecurrenceRaw(RecurrencePattern recurrencePattern) {
+        this.recurrencePattern = recurrencePattern;
+        this.isRecurring = true;
+        return recurrencePattern;
+    }
+
+    public Tag addTagRaw(Tag tag) {
+        this.tags.add(tag);
+        return tag;
+    }
+
+    public ActivityEntry addActivityRaw(ActivityEntry activity) {
+        this.activityHistory.add(activity);
+        return activity;
+    }
+
+    public Project setProjectRaw(Project project) {
+        this.project = project;
+        return project;
     }
 }

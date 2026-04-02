@@ -1,6 +1,9 @@
 package com.soen342.model;
 
 import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBUtil;
+
+import java.sql.SQLException;
 
 public class Subtask {
 
@@ -19,19 +22,64 @@ public class Subtask {
         this.subStatus = TaskStatus.OPEN;
     }
 
+    public Subtask(int id, String subTitle, TaskStatus status) {
+
+        this.subtaskId = id;
+        this.subTitle = subTitle;
+        this.subStatus = status;
+
+        idCounter = Math.max(idCounter, id + 1);
+    }
+
     // --- Getters & Setters ---
 
     public int getSubtaskId() { return subtaskId; }
 
     public String getSubTitle() { return subTitle; }
 
-    public void setSubTitle(String subTitle) { this.subTitle = subTitle; }
+    public void setSubTitle(String subTitle) {
+        String old = this.subTitle;
+        this.subTitle = subTitle;
+        try {
+            DBUtil.editSubtask(this);
+        } catch (SQLException e) {
+            this.subTitle = old;
+            throw new RuntimeException("Failed to update subtask, operation aborted.", e);
+        }
+    }
 
-    public void complete() { this.subStatus = TaskStatus.COMPLETED; }
+    public void complete() {
+        TaskStatus prev = subStatus;
+        this.subStatus = TaskStatus.COMPLETED;
+        try {
+            DBUtil.editSubtask(this);
+        } catch (SQLException e) {
+            this.subStatus = prev;
+            throw new RuntimeException("Failed to update subtask, operation aborted.", e);
+        }
+    }
 
-    public void cancel() { this.subStatus = TaskStatus.CANCELLED; }
+    public void cancel() {
+        TaskStatus prev = subStatus;
+        this.subStatus = TaskStatus.CANCELLED;
+        try {
+            DBUtil.editSubtask(this);
+        } catch (SQLException e) {
+            this.subStatus = prev;
+            throw new RuntimeException("Failed to update subtask, operation aborted.", e);
+        }
+    }
 
-    public void reopen() { this.subStatus = TaskStatus.OPEN; }
+    public void reopen() {
+        TaskStatus prev = subStatus;
+        this.subStatus = TaskStatus.OPEN;
+        try {
+            DBUtil.editSubtask(this);
+        } catch (SQLException e) {
+            this.subStatus = prev;
+            throw new RuntimeException("Failed to update subtask, operation aborted.", e);
+        }
+    }
 
     public TaskStatus getSubStatus() { return subStatus; }
 
@@ -39,6 +87,12 @@ public class Subtask {
 
     public void setLinkedCollaborator(Collaborator collaborator) {
         this.linkedCollaborator = collaborator;
+        try {
+            DBUtil.editSubtask(this);
+        } catch (SQLException e) {
+            this.linkedCollaborator = null;
+            throw new RuntimeException("Failed to update subtask, operation aborted.", e);
+        }
     }
 
     public boolean isLinkedToCollaborator() { return linkedCollaborator != null; }
@@ -49,5 +103,10 @@ public class Subtask {
                 ? " [Collaborator: " + linkedCollaborator.getName() + "]"
                 : "";
         return "  Subtask #" + subtaskId + ": " + subTitle + " [" + subStatus + "]" + collabInfo;
+    }
+
+    //raw data setting - bypasses business logic
+    public void setLinkedCollaboratorRaw(Collaborator collaborator) {
+        this.linkedCollaborator = collaborator;
     }
 }

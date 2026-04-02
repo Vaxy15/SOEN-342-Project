@@ -2,7 +2,9 @@ package com.soen342.catalog;
 
 import com.soen342.model.ActivityEntry;
 import com.soen342.model.Task;
+import com.soen342.persistence.DBUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,24 +14,29 @@ import java.util.List;
  */
 public class History {
 
-    private static final List<ActivityEntry> allEntries = new ArrayList<>();
+    public final List<ActivityEntry> allEntries = new ArrayList<>();
 
-    public static void record(ActivityEntry entry) {
+    public void record(ActivityEntry entry) {
         allEntries.add(entry);
+        try{
+            DBUtil.saveActivityEntry(entry);
+        } catch (SQLException e){
+            throw new RuntimeException("Failed to save activity entry, operation aborted.", e);
+        }
     }
 
     /**
      * Returns the full activity history for a specific task.
      */
-    public static List<ActivityEntry> getHistoryForTask(Task task) {
+    public List<ActivityEntry> getHistoryForTask(Task task) {
         return task.getActivityHistory();
     }
 
-    public static List<ActivityEntry> getAllEntries() {
+    public List<ActivityEntry> getAllEntries() {
         return allEntries;
     }
 
-    public static void printTaskHistory(Task task) {
+    public void printTaskHistory(Task task) {
         List<ActivityEntry> history = task.getActivityHistory();
         if (history.isEmpty()) {
             System.out.println("No activity history for task: " + task.getTitle());
@@ -37,5 +44,10 @@ public class History {
         }
         System.out.println("--- Activity History: " + task.getTitle() + " ---");
         history.forEach(System.out::println);
+    }
+
+    //raw data setting - bypasses business logic
+    public void recordRaw(ActivityEntry entry) {
+        allEntries.add(entry);
     }
 }

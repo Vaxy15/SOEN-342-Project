@@ -5,9 +5,12 @@ import com.soen342.model.Tag;
 import com.soen342.model.Task;
 import com.soen342.model.enums.Priority;
 import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBUtil;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +30,23 @@ public class TaskCatalog {
 
     public Task createTask(String title, String description, Priority priority) {
         Task task = new Task(TaskIdCounter++, title, description, priority);
+        try {
+            DBUtil.saveTask(task);
+        } catch (SQLException e) {
+            TaskIdCounter--;
+            throw new RuntimeException("Failed to save task, operation aborted.", e);
+        }
         tasks.add(task);
+        return task;
+    }
+
+    public Task loadTaskFromDataStore(int id, String title, String description, Priority priority, TaskStatus status, boolean isRecurring, LocalDate dueDate, LocalDateTime createdOn) {
+        if(findById(id).isPresent()) {
+            throw new RuntimeException("task with id " + id + " already exists");
+        }
+        Task task = Task.createTaskRaw(id, title, description, priority, status, isRecurring, dueDate, createdOn);
+        tasks.add(task);
+        TaskIdCounter = Math.max(TaskIdCounter, id + 1);
         return task;
     }
 

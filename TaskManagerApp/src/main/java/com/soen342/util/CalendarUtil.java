@@ -42,16 +42,25 @@ public class CalendarUtil implements ExportGateway{
         // inline import to avoid confusion between our Priority Object and library's Priority
         net.fortuna.ical4j.model.property.Priority priority = parsePriority(task.getPriority());
         Due<LocalDate> due = new Due<>(task.getDueDate());
-        RelatedTo relatedTo = new RelatedTo(task.getProject().getName());
+
+        RelatedTo relatedTo = task.getProject() != null ? new RelatedTo(task.getProject().getName()) : null;
 
         List<Property> properties = List.of(
                 name,
                 description,
                 status,
                 priority,
-                due,
-                relatedTo
+                due
         );
+        if (relatedTo != null)
+            properties = List.of(
+                    name,
+                    description,
+                    status,
+                    priority,
+                    due,
+                    relatedTo
+            );
         todos.add(new VToDo(new PropertyList(properties)));
         return todos;
     }
@@ -118,6 +127,7 @@ public class CalendarUtil implements ExportGateway{
         Path path = Path.of(fileName);
         // this is to verify if location already has an existing file
         Files.createFile(path);
+        Files.delete(path);
 
         Calendar calendar = new Calendar();
         for (Task task : tasks) {
@@ -130,6 +140,7 @@ public class CalendarUtil implements ExportGateway{
         CalendarOutputter outputter = new CalendarOutputter();
         try (FileOutputStream fos = new FileOutputStream(path.toFile())) {
             outputter.output(calendar, fos);
+            fos.flush();
         } catch (ValidationException e) {
             throw new RuntimeException("Error validating calendar, parsing doesnt follow RFC 5545", e);
         }
