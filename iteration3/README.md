@@ -75,6 +75,7 @@ TaskManagerApp/
 
 Iteration III Features
 This iteration extends the system with the following features:
+
 1. iCalendar (.ics) Export
 The system supports exporting task information to .ics format for use in calendar applications such as Google Calendar, Apple Calendar, and Outlook.
 Supported export scenarios:
