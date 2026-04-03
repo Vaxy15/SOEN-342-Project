@@ -72,6 +72,7 @@ TaskManagerApp/
                     │
                     └── console/
                         └── Console.java
+
 Iteration III Features
 This iteration extends the system with the following features:
 1. iCalendar (.ics) Export
@@ -106,6 +107,7 @@ the number of open tasks without a due date cannot exceed 50
 each collaborator task limit must be a positive integer
 no collaborator may be overloaded
 These constraints are documented in the Iteration III deliverables and reflected in the updated UML model.
+
 How the Code Works
 High-Level Flow
 User input
@@ -117,7 +119,9 @@ Catalogs / Utility Services
 Model classes
     ↓
 External file formats (.csv / .ics) and persistence
+
 The Console class is the main interaction point. It receives user commands and delegates work to the catalogs, model objects, and utility classes.
+
 Main Components
 Console Layer
 Console handles:
@@ -127,12 +131,14 @@ search and filtering
 CSV import/export
 ICS export
 overloaded collaborator checks
+
 Relevant Iteration III additions include:
 handleICSMenu()
 handleExportSingleTask()
 handleExportAllTasks()
 handleICSExportFromSearch()
 ICSExport(List<Task>)
+
 Catalog Layer
 The catalogs act as in-memory managers for the domain objects:
 TaskCatalog — task storage, filtering, search, lookup by ID
@@ -141,6 +147,7 @@ TagCatalog — tag storage
 CollaboratorCatalog — collaborator storage
 History — task activity history access
 TaskCatalog.SearchCriteria is used to build advanced searches.
+
 Model Layer
 Core domain classes include:
 Task — main task entity
@@ -150,24 +157,30 @@ Collaborator — external collaborator assigned to subtasks
 TaskOccurrence — occurrence of a recurring task
 RecurrencePattern — recurrence definition
 ActivityEntry — task history log
+
 Important business rules in the model include:
 a collaborator can only be assigned through project-linked tasks
 recurring tasks generate occurrences over time
 subtasks belong only to one parent task
 activity history is recorded for significant task actions
+
 Utility Layer
+
 CsvUtil
 Handles:
 import from CSV
 export to CSV
+
 ExportGateway
 Defines the contract for calendar export.
+
 CalendarUtil
 Implements the calendar export logic:
 converts tasks into iCalendar todo entries
 ignores tasks without due dates
 includes subtasks inside the description
 uses iCal4j for writing .ics files
+
 Running ICS Export
 From the console, the user can:
 choose the ICS export menu
@@ -176,10 +189,12 @@ provide a file path
 generate a .ics file
 Example output file:
 my_tasks.ics
+
 External Dependency
 This project uses:
 iCal4j for iCalendar generation
 Configured through Maven in pom.xml.
+
 Common Issues
 Problem	Fix
 mvn: command not found	Install Maven and add it to your PATH
