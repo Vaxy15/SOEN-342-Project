@@ -1,0 +1,337 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36">
+  <diagram name="Page-1" id="YdzxDkjhJYP9CVGyN_Ob">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-66" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0-AIdlXf6G0R9j5GUKev-48">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="260" y="70" />
+              <mxPoint x="-40" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-72" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamondThin;endFill=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-22" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;" target="0-AIdlXf6G0R9j5GUKev-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-400" y="130" />
+              <mxPoint x="-400" y="-180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-23" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.128;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;dashPattern=8 8;" target="0-AIdlXf6G0R9j5GUKev-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="130" />
+              <mxPoint x="150" y="110" />
+              <mxPoint x="-350" y="110" />
+              <mxPoint x="-350" y="-305" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Task&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id: int&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- title: String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- description: String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdOn: Date&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- duedate: String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- status: TaskStatus&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- priority: Priority&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- project: project&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- recurrencePattern: RecurencePatttern&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- isReccuring: booelan&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- subtasks: Subtask[]&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- tags: Tag[]&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- activityHistory: ActivityEntry[]&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- occurences: TaskOccurence[]&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;+Task(id: int, title: String, description: String, priority: Priority)&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ complete() : void&lt;br&gt;+ cancel() : void&lt;br&gt;+ reopen() : void&lt;br&gt;+ addSubtask(subTitle: String) : Subtask&lt;br&gt;+ removeSubtask(subtaskId: int) : void&lt;br&gt;+ updateSubtaskTitle(subtaskId: int, newTitle: String) : void&lt;br&gt;+ markSubtaskComplete(subtaskId: int) : void&lt;br&gt;+ markSubtaskCancelled(subtaskId: int) : void&lt;br&gt;+ markSubtaskReopen(subtaskId: int) : void&lt;br&gt;+ allSubtasksComplete() : boolean&lt;br&gt;+ markOccurrenceComplete(occurrenceId: int) : void&lt;br&gt;+ markOccurrenceCancelled(occurrenceId: int) : void&lt;br&gt;+ addTag(tag: Tag) : void&lt;br&gt;+ removeTag(tag: Tag) : void&lt;br&gt;+ setRecurrencePattern(pattern: RecurrencePattern) : void&lt;br&gt;+ assignCollaborator(collaborator: Collaborator) : Subtask&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;+ getTaskId() : int&lt;br&gt;+ getTitle() : String&lt;br&gt;+ setTitle(title: String) : void&lt;br&gt;+ getDescription() : String&lt;br&gt;+ setDescription(description: String) : void&lt;br&gt;+ getCreatedOn() : LocalDateTime&lt;br&gt;+ getDueDate() : LocalDate&lt;br&gt;+ setDueDate(dueDate: LocalDate) : void&lt;br&gt;+ getStatus() : TaskStatus&lt;br&gt;+ getPriority() : Priority&lt;br&gt;+ setPriority(priority: Priority) : void&lt;br&gt;+ getProject() : Project&lt;br&gt;+ setProject(project: Project) : void&lt;br&gt;+ isRecurring() : boolean&lt;br&gt;+ getRecurrencePattern() : RecurrencePattern&lt;br&gt;+ getSubtasks() : List&amp;lt;Subtask&amp;gt;&lt;br&gt;+ getTags() : List&amp;lt;Tag&amp;gt;&lt;br&gt;+ getActivityHistory() : List&amp;lt;ActivityEntry&amp;gt;&lt;br&gt;+ getOccurrences() : List&amp;lt;TaskOccurrence&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;- generateOccurrences() : void&lt;br&gt;- recordActivity(type: ActivityType, description: String) : void&lt;br&gt;- getSubtask(subtaskId: int) : Subtask&lt;br&gt;- getOccurrence(occurrenceId: int) : TaskOccurrence&lt;br&gt;- StatusCheck(status: TaskStatus) : boolean&lt;/p&gt;" vertex="1">
+          <mxGeometry height="890" width="510" x="150" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-60" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamondThin;endFill=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-290" y="915" />
+              <mxPoint x="-290" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-69" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="0-AIdlXf6G0R9j5GUKev-47">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-885" y="1210" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-2" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;SubTask&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp;- idCounter : int                       {static}&lt;br&gt;&amp;nbsp;- subtaskId : int&lt;br&gt;&amp;nbsp;- subTitle : String&lt;br&gt;&amp;nbsp;- subStatus : TaskStatus&lt;br&gt;&amp;nbsp;- linkedCollaborator : Collaborator&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+Subtask(subTitle: String)&lt;br&gt;&lt;br&gt;+complete(): void&lt;br&gt;+cancel(): void&lt;br&gt;+reopen(): void&lt;br&gt;&lt;br&gt;+getSubtaskId(): int&lt;br&gt;+getSubTitle(): String&lt;br&gt;+setSubTitle(subTitle: String): void&lt;br&gt;+getSubStatus(): TaskStatus&lt;br&gt;+getLinkedCollaborator(): Collaborator&lt;br&gt;+setLinkedCollaborator(collaborator: Collaborator): void&lt;br&gt;+isLinkedToCollaborator(): boolean&lt;br&gt;&lt;br&gt;+toString(): String&lt;/p&gt;" vertex="1">
+          <mxGeometry height="350" width="310" x="-1040" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-4" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;ActivityType&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;CREATED&lt;br&gt;UPDATED&lt;br&gt;COMPLETED&lt;br&gt;CANCELLED&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="110" width="190" x="-370" y="-470" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-5" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;CollaboratorCategory&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;SENIOR&lt;br&gt;INTERMEDIATE&lt;br&gt;JUNIOR&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="100" width="190" x="-680" y="1300" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-6" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20parent%3D%221%22%20style%3D%22verticalAlign%3Dtop%3Balign%3Dleft%3Boverflow%3Dfill%3Bhtml%3D1%3BwhiteSpace%3Dwrap%3B%22%20value%3D%22%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-top%3A4px%3Btext-align%3Acenter%3B%26quot%3B%26gt%3B%26lt%3Bi%26gt%3B%26amp%3Blt%3B%26amp%3Blt%3BEnumeration%26amp%3Bgt%3B%26lt%3B%2Fi%26gt%3B%26lt%3Bbr%26gt%3B%26lt%3Bb%26gt%3BCollaboratorCategory%26lt%3B%2Fb%26gt%3B%26lt%3B%2Fp%26gt%3B%26lt%3Bhr%20size%3D%26quot%3B1%26quot%3B%20style%3D%26quot%3Bborder-style%3Asolid%3B%26quot%3B%26gt%3B%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-left%3A4px%3B%26quot%3B%26gt%3BSENIOR%26lt%3Bbr%26gt%3BINTERMEDIATE%26lt%3Bbr%26gt%3BJUNIOR%26lt%3Bbr%26gt%3B%26lt%3Bbr%26gt%3B%26lt%3Bbr%26gt%3B%26lt%3B%2Fp%26gt%3B%26lt%3Bhr%20size%3D%26quot%3B1%26quot%3B%20style%3D%26quot%3Bborder-style%3Asolid%3B%26quot%3B%26gt%3B%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-left%3A4px%3B%26quot%3B%26gt%3B%26lt%3Bbr%26gt%3B%26lt%3B%2Fp%26gt%3B%22%20vertex%3D%221%22%3E%3CmxGeometry%20height%3D%22100%22%20width%3D%22190%22%20x%3D%22930%22%20y%3D%22730%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;&lt;b&gt;Priority&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;LOW&lt;br&gt;MEDIUM&lt;br&gt;HIGH&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="100" width="190" x="-630" y="-380" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-7" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;ReccurrenceType&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;DAILY&lt;br&gt;WEEKLY&lt;br&gt;MONTHLY&lt;br&gt;CUSTOM&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="110" width="190" x="-630" y="-75" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-8" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Enumeration&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;TaskStatus&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;OPEN&lt;br&gt;COMPLETED&lt;br&gt;CANCELLED&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="100" width="190" x="-630" y="-230" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-10" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Console&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- taskCatalog : TaskCatalog&amp;nbsp;&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;- projCatalog : ProjCatalog&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;- tagCatalog : TagCatalog&amp;nbsp;&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;- collaboratorCatalog : CollaboratorCatalog&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- scanner : Scanner&lt;/span&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ start() : void&amp;nbsp;&lt;br&gt;- printMainMenu() : void&amp;nbsp;&lt;br&gt;- handleTaskMenu() : void&amp;nbsp;&lt;br&gt;- handleProjectMenu() : void&amp;nbsp;&lt;br&gt;-handleTagMenu() : void&amp;nbsp;&lt;br&gt;- handleCollaboratorMenu() : void&amp;nbsp;&lt;br&gt;- handleSearchMenu() : void&amp;nbsp;&lt;br&gt;- handleCsvMenu() : void&amp;nbsp;&lt;br&gt;- createTask() : void&amp;nbsp;&lt;br&gt;- viewTaskDetails() : void&amp;nbsp;&lt;br&gt;- updateTask() : void&amp;nbsp;&lt;br&gt;- completeTask() : void&lt;br&gt;- cancelTask() : void&amp;nbsp;&lt;br&gt;- addSubtask() : void&amp;nbsp;&lt;br&gt;- markSubtaskComplete() : void&amp;nbsp;&lt;br&gt;- markSubtaskCancelled() : void&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- removeSubtask() : void&amp;nbsp;&lt;br&gt;- addTagToTask() : void&amp;nbsp;&lt;br&gt;- removeTagFromTask() : void&amp;nbsp;&lt;br&gt;- assignTaskToProject() : void&amp;nbsp;&lt;br&gt;- removeTaskFromProject() : void&amp;nbsp;&lt;br&gt;- assignCollaboratorToTask() : void&amp;nbsp;&lt;br&gt;- viewActivityHistory() : void&amp;nbsp;&lt;br&gt;- addRecurrencePattern(task:Task) : void&amp;nbsp;&lt;br&gt;- promptTaskById() : Task&amp;nbsp;&lt;br&gt;- promptPriority() : Priority&amp;nbsp;&lt;br&gt;- parsePrioritySafe(s:String) : Priority&amp;nbsp;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="515" width="260" x="1510" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-63" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-870" y="660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-65" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0-AIdlXf6G0R9j5GUKev-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-660" y="378" />
+              <mxPoint x="-660" y="378" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-11" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;TaskOccurrence&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- idCounter : int {static}&lt;br&gt;- occurrenceId : int&lt;br&gt;- parentTask : Task&lt;br&gt;- dueDate : LocalDate&lt;br&gt;- priority : Priority&lt;br&gt;- status : TaskStatus&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;TaskOccurrence(parentTask : Task, dueDate : LocalDate)&lt;br/&gt;+ complete() : void&lt;br/&gt;+ cancel() : void&lt;br/&gt;+ getOccurrenceId() : int&lt;br/&gt;+ getParentTask() : Task&lt;br/&gt;+ getDueDate() : LocalDate&lt;br/&gt;+ setDueDate(dueDate : LocalDate) : void&lt;br/&gt;+ getPriority() : Priority&lt;br/&gt;+ setPriority(priority : Priority) : void&lt;br/&gt;+ getStatus() : TaskStatus&lt;br/&gt;+ setStatus(status : TaskStatus) : void&lt;br/&gt;+ getUniqueKey() : String&lt;br/&gt;+ toString() : String&lt;/p&gt;" vertex="1">
+          <mxGeometry height="327.5" width="320" x="-1030" y="182.5" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-56" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamondThin;endFill=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-62" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="710" y="230" />
+              <mxPoint x="710" y="230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-12" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Tag&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- tagId : int&lt;br&gt;- name : String&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ Tag(id:int, name:String)&lt;br&gt;&amp;nbsp;+ getTagId() : int&amp;nbsp;&lt;br&gt;+ getName() : String&amp;nbsp;&lt;br&gt;+ toString() : String&amp;nbsp;&amp;nbsp;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="140" width="190" x="805" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-64" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-25" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;" target="0-AIdlXf6G0R9j5GUKev-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-500" y="102" />
+              <mxPoint x="-535" y="102" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-13" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ReccurrencePattern&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- idCounter : int                                        {static}&amp;nbsp;&lt;br&gt;&amp;nbsp;- patternId : int&amp;nbsp;&lt;br&gt;&amp;nbsp;- type : RecurrenceType&amp;nbsp;&lt;br&gt;&amp;nbsp;- interval : int&amp;nbsp;&lt;br&gt;&amp;nbsp;- startDate : LocalDate&amp;nbsp;&lt;br&gt;&amp;nbsp;- endDate : LocalDate&amp;nbsp;&lt;br&gt;&amp;nbsp;- selectedDays : String&amp;nbsp;&lt;br&gt;&amp;nbsp;- dayOfMonth : int&amp;nbsp;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ RecurrencePattern(type:RecurrenceType, interval:int,&amp;nbsp;startDate:LocalDate, endDate:LocalDate)&amp;nbsp;&lt;br&gt;&amp;nbsp;+ generateOccurrenceDates() : List&amp;lt;LocalDate&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getPatternId() : int&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getType() : RecurrenceType&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setType(type:RecurrenceType) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getInterval() : int&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setInterval(interval:int) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getStartDate() : LocalDate&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setStartDate(startDate:LocalDate) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getEndDate() : LocalDate&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setEndDate(endDate:LocalDate) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getSelectedDays() : String&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setSelectedDays(selectedDays:String) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getDayOfMonth() : int&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setDayOfMonth(dayOfMonth:int) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ toString() : String&lt;/p&gt;" vertex="1">
+          <mxGeometry height="415" width="540" x="-500" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-57" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=diamondThin;endFill=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-61" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-14" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Project&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- projectId : int&amp;nbsp;&lt;br&gt;&amp;nbsp;- name : String&amp;nbsp;&lt;br&gt;&amp;nbsp;- description : String&amp;nbsp;&lt;br&gt;&amp;nbsp;- tasks : List&amp;lt;Task&amp;gt;                            [1..*]&amp;nbsp;&lt;br&gt;&amp;nbsp;- collaborators : List&amp;lt;Collaborator&amp;gt;            [*..*]&amp;nbsp;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ Project(id:int, name:String, description:String)&amp;nbsp;&lt;br&gt;&amp;nbsp;+ addTask(task:Task) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ removeTask(task:Task) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ addCollaborator(collaborator:Collaborator) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ removeCollaborator(collaborator:Collaborator) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ hasCollaborator(collaborator:Collaborator) : boolean&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getProjectId() : int&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getName() : String&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setName(name:String) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getDescription() : String&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setDescription(description:String) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getTasks() : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getCollaborators() : List&amp;lt;Collaborator&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ toString() : String&amp;nbsp;&amp;nbsp;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="330" width="460" x="930" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-59" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamondThin;endFill=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-70" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamond;endFill=0;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="620" y="1170" />
+              <mxPoint x="620" y="1170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-26" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-360" y="1370" />
+              <mxPoint x="-360" y="1370" />
+            </Array>
+            <mxPoint x="-480" y="1370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-47" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Collaborator&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- idCounter : int                                      {static}&amp;nbsp;&lt;br&gt;&amp;nbsp;- collaboratorId : int&amp;nbsp;&lt;br&gt;&amp;nbsp;- name : String&amp;nbsp;&lt;br&gt;&amp;nbsp;- category : CollaboratorCategory&amp;nbsp;&lt;br&gt;&amp;nbsp;- assignedSubtasks : List&amp;lt;Subtask&amp;gt;&amp;nbsp;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ Collaborator(name:String, category:CollaboratorCategory)&amp;nbsp;&lt;br&gt;&amp;nbsp;+ countOpenTasks() : long&amp;nbsp;&lt;br&gt;&amp;nbsp;+ hasCapacity() : boolean&amp;nbsp;&lt;br&gt;&amp;nbsp;+ assignSubtask(subtask:Subtask) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ removeSubtask(subtask:Subtask) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getCollaboratorId() : int&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getName() : String&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setName(name:String) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getCategory() : CollaboratorCategory&amp;nbsp;&lt;br&gt;&amp;nbsp;+ setCategory(category:CollaboratorCategory) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getAssignedSubtasks() : List&amp;lt;Subtask&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ toString() : String&lt;/p&gt;" vertex="1">
+          <mxGeometry height="380" width="360" x="-330" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-67" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamondThin;endFill=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-24" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" target="0-AIdlXf6G0R9j5GUKev-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-220" y="-315" />
+              <mxPoint x="-275" y="-315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-48" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ActivityEntry&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;-&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20parent%3D%221%22%20style%3D%22verticalAlign%3Dtop%3Balign%3Dleft%3Boverflow%3Dfill%3Bhtml%3D1%3BwhiteSpace%3Dwrap%3B%22%20value%3D%22%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-top%3A4px%3Btext-align%3Acenter%3B%26quot%3B%26gt%3B%26lt%3Bb%26gt%3BCollaborator%26lt%3B%2Fb%26gt%3B%26lt%3B%2Fp%26gt%3B%26lt%3Bhr%20size%3D%26quot%3B1%26quot%3B%20style%3D%26quot%3Bborder-style%3Asolid%3B%26quot%3B%26gt%3B%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-left%3A4px%3B%26quot%3B%26gt%3B-%20idCounter%20%3A%20int%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7Bstatic%7D%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20collaboratorId%20%3A%20int%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20name%20%3A%20String%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20category%20%3A%20CollaboratorCategory%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20assignedSubtasks%20%3A%20List%26amp%3Blt%3BSubtask%26amp%3Bgt%3B%26amp%3Bnbsp%3B%26amp%3Bnbsp%3B%26lt%3B%2Fp%26gt%3B%26lt%3Bhr%20size%3D%26quot%3B1%26quot%3B%20style%3D%26quot%3Bborder-style%3Asolid%3B%26quot%3B%26gt%3B%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-left%3A4px%3B%26quot%3B%26gt%3B%2B%20Collaborator(name%3AString%2C%20category%3ACollaboratorCategory)%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20countOpenTasks()%20%3A%20long%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20hasCapacity()%20%3A%20boolean%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20assignSubtask(subtask%3ASubtask)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20removeSubtask(subtask%3ASubtask)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getCollaboratorId()%20%3A%20int%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getName()%20%3A%20String%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20setName(name%3AString)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getCategory()%20%3A%20CollaboratorCategory%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20setCategory(category%3ACollaboratorCategory)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getAssignedSubtasks()%20%3A%20List%26amp%3Blt%3BSubtask%26amp%3Bgt%3B%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20toString()%20%3A%20String%26lt%3B%2Fp%26gt%3B%22%20vertex%3D%221%22%3E%3CmxGeometry%20height%3D%22380%22%20width%3D%22360%22%20x%3D%22660%22%20y%3D%221230%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-wrap-mode: nowrap; background-color: transparent;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20parent%3D%221%22%20style%3D%22verticalAlign%3Dtop%3Balign%3Dleft%3Boverflow%3Dfill%3Bhtml%3D1%3BwhiteSpace%3Dwrap%3B%22%20value%3D%22%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-top%3A4px%3Btext-align%3Acenter%3B%26quot%3B%26gt%3B%26lt%3Bb%26gt%3BCollaborator%26lt%3B%2Fb%26gt%3B%26lt%3B%2Fp%26gt%3B%26lt%3Bhr%20size%3D%26quot%3B1%26quot%3B%20style%3D%26quot%3Bborder-style%3Asolid%3B%26quot%3B%26gt%3B%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-left%3A4px%3B%26quot%3B%26gt%3B-%20idCounter%20%3A%20int%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7Bstatic%7D%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20collaboratorId%20%3A%20int%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20name%20%3A%20String%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20category%20%3A%20CollaboratorCategory%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B-%20assignedSubtasks%20%3A%20List%26amp%3Blt%3BSubtask%26amp%3Bgt%3B%26amp%3Bnbsp%3B%26amp%3Bnbsp%3B%26lt%3B%2Fp%26gt%3B%26lt%3Bhr%20size%3D%26quot%3B1%26quot%3B%20style%3D%26quot%3Bborder-style%3Asolid%3B%26quot%3B%26gt%3B%26lt%3Bp%20style%3D%26quot%3Bmargin%3A0px%3Bmargin-left%3A4px%3B%26quot%3B%26gt%3B%2B%20Collaborator(name%3AString%2C%20category%3ACollaboratorCategory)%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20countOpenTasks()%20%3A%20long%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20hasCapacity()%20%3A%20boolean%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20assignSubtask(subtask%3ASubtask)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20removeSubtask(subtask%3ASubtask)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getCollaboratorId()%20%3A%20int%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getName()%20%3A%20String%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20setName(name%3AString)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getCategory()%20%3A%20CollaboratorCategory%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20setCategory(category%3ACollaboratorCategory)%20%3A%20void%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20getAssignedSubtasks()%20%3A%20List%26amp%3Blt%3BSubtask%26amp%3Bgt%3B%26amp%3Bnbsp%3B%26lt%3Bbr%26gt%3B%26amp%3Bnbsp%3B%2B%20toString()%20%3A%20String%26lt%3B%2Fp%26gt%3B%22%20vertex%3D%221%22%3E%3CmxGeometry%20height%3D%22380%22%20width%3D%22360%22%20x%3D%22660%22%20y%3D%221230%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- FORMATTER : DateTimeFormatter                   {static}&amp;nbsp;&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;-&amp;nbsp; type : ActivityType&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;-&amp;nbsp; timeStamp : LocalDateTime&amp;nbsp;&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- description : String&lt;/span&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ ActivityEntry(type:ActivityType, description:String)&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getType() : ActivityType&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getTimeStamp() : LocalDateTime&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getDescription() : String&amp;nbsp;&lt;br&gt;&amp;nbsp;+ toString() : String&lt;/p&gt;" vertex="1">
+          <mxGeometry height="180" width="360" x="-220" y="-270" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-58" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-49" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;CollaboratorCatalog&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;- collaborators : List&amp;lt;Collaborator&amp;gt;&lt;/span&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ createCollaborator(name:String,&amp;nbsp;category:CollaboratorCategory) : Collaborator&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findById(id:int) : Optional&amp;lt;Collaborator&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findByName(name:String) : Optional&amp;lt;Collaborator&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findOrCreate(name:String,&amp;nbsp;category:CollaboratorCategory) : Collaborator&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getAllCollaborators() : List&amp;lt;Collaborator&amp;gt;&amp;nbsp;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="140" width="440" x="400" y="1320" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-68" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=20;exitX=1;exitY=0.231;exitDx=0;exitDy=0;exitPerimeter=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1700" y="-610" />
+            </Array>
+            <mxPoint x="230" y="-575" as="sourcePoint" />
+            <mxPoint x="1700" y="50" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-50" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;History&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp;- allEntries : List&amp;lt;ActivityEntry&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ record(entry:ActivityEntry) : void              {static}&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getHistoryForTask(task:Task) : List&amp;lt;ActivityEntry&amp;gt;&amp;nbsp;{static}&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getAllEntries() : List&amp;lt;ActivityEntry&amp;gt;            {static}&amp;nbsp;&lt;br&gt;&amp;nbsp;+ printTaskHistory(task:Task) : void&lt;/p&gt;" vertex="1">
+          <mxGeometry height="130" width="440" x="-220" y="-640" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-55" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-51" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ProjCatalog&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- projectIdCounter : int                              {static}&lt;br&gt;&amp;nbsp;- projects : List&amp;lt;Project&amp;gt;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ createProject(name:String, description:String) : Project&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findByName(name:String) : Optional&amp;lt;Project&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findById(projectId:int) : Optional&amp;lt;Project&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findOrCreate(name:String, description:String) : Project&amp;nbsp;&lt;br&gt;&amp;nbsp;+ deleteProject(project:Project) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ updateProject(project:Project, newName:String,&amp;nbsp;&lt;br&gt;&amp;nbsp;newDescription:String) : void&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getAllProjects() : List&amp;lt;Project&amp;gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="200" width="490" x="915" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-54" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1540" y="-70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-52" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;TagCatalog&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- tagIdCounter : int                   {static}&amp;nbsp;&lt;br&gt;&amp;nbsp;- tags : List&amp;lt;Tag&amp;gt;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ createTag(name:String) : Tag&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findByName(name:String) : Optional&amp;lt;Tag&amp;gt;&amp;nbsp;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp;+ findById(tagId:int) : Optional&amp;lt;Tag&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findOrCreate(name:String) : Tag&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getAllTags() : List&amp;lt;Tag&amp;gt;&amp;nbsp;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="160" width="490" x="890" y="-170" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-73" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=20;" target="0-AIdlXf6G0R9j5GUKev-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1580" y="-220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fnHosCAE6sb-_03uiToD-5" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;endArrow=open;endFill=0;endSize=20;" target="fnHosCAE6sb-_03uiToD-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0-AIdlXf6G0R9j5GUKev-53" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;TaskCatalog&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;- TaskIdCounter : int                                        {static}&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;- tasks : List&amp;lt;Task&amp;gt;&lt;/span&gt;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ createTask(title:String, description:String,&amp;nbsp;&lt;br&gt;&amp;nbsp;priority:Priority) : Task&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findById(taskId:int) : Optional&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ findByTitleAndDueDate(title:String,&amp;nbsp;&lt;br&gt;&amp;nbsp;+ dueDate:LocalDate) : Optional&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getAllTasks() : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ getOpenTasksSortedByDueDate() : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ searchByKeyword(keyword:String) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByStatus(status:TaskStatus) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByPriority(priority:Priority) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByProject(project:Project) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByTag(tag:Tag) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByDueDate(date:LocalDate) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByDueDateRange(from:LocalDate, to:LocalDate) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ filterByDayOfWeek(dayOfWeek:DayOfWeek) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;+ search(criteria:SearchCriteria) : List&amp;lt;Task&amp;gt;&amp;nbsp;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="370" width="490" x="200" y="-450" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="generates" vertex="1">
+          <mxGeometry height="30" width="80" x="-650" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="30" width="60" x="-550" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1..*" vertex="1">
+          <mxGeometry height="30" width="60" x="-720" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20parent%3D%221%22%20style%3D%22text%3Bhtml%3D1%3BwhiteSpace%3Dwrap%3BstrokeColor%3Dnone%3BfillColor%3Dnone%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3Brounded%3D0%3B%22%20value%3D%22occurs-as%22%20vertex%3D%221%22%3E%3CmxGeometry%20height%3D%2224%22%20width%3D%2280%22%20x%3D%22-1395%22%20y%3D%22700%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;Occurs-as" vertex="1">
+          <mxGeometry height="30" width="60" x="-350" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-7" parent="1" style="triangle;whiteSpace=wrap;html=1;rotation=-180;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="12" width="10" x="-370" y="639" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0..1" vertex="1">
+          <mxGeometry height="30" width="60" x="30" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-9" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="30" width="60" x="90" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="*" vertex="1">
+          <mxGeometry height="30" width="60" x="640" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="*" vertex="1">
+          <mxGeometry height="30" width="60" x="800" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="0..1" vertex="1">
+          <mxGeometry height="30" width="60" x="870" y="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="is part of" vertex="1">
+          <mxGeometry height="30" width="60" x="730" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-14" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="*" vertex="1">
+          <mxGeometry height="30" width="60" x="650" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-15" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="holds reference to" vertex="1">
+          <mxGeometry height="30" width="110" x="359" y="1169" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-16" parent="1" style="triangle;whiteSpace=wrap;html=1;rotation=-180;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="12" width="10" x="349" y="1178" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="keeps record of change" vertex="1">
+          <mxGeometry height="30" width="150" x="30" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="*" vertex="1">
+          <mxGeometry height="30" width="60" x="-90" y="-90" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="30" width="60" x="210" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="NTz1NT_bo6KxFSJ7LzSR-21" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="linked subtask" vertex="1">
+          <mxGeometry height="30" width="90" x="-680" y="1178" as="geometry" />
+        </mxCell>
+        <mxCell id="fnHosCAE6sb-_03uiToD-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;SearchCriteria&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp;- status : TaskStatus&amp;nbsp;&lt;br&gt;&amp;nbsp;- priority : Priority&amp;nbsp;&lt;br&gt;&amp;nbsp;- project : Project&amp;nbsp;&lt;br&gt;&amp;nbsp;- tag : Tag&amp;nbsp;&lt;br&gt;&amp;nbsp;- keyword : String&amp;nbsp;&lt;br&gt;&amp;nbsp;- fromDate : LocalDate&amp;nbsp;&lt;br&gt;&amp;nbsp;- toDate : LocalDate&amp;nbsp;&lt;br&gt;&amp;nbsp;- dayOfWeek : DayOfWeek&amp;nbsp;&lt;br&gt;&amp;nbsp;- orderBy : String&amp;nbsp;&amp;nbsp;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&amp;nbsp;+ status(s:TaskStatus) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ priority(p:Priority) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ project(pr:Project) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ tag(t:Tag) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ keyword(kw:String) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ dateRange(f:LocalDate, t:LocalDate) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ dayOfWeek(d:DayOfWeek) : SearchCriteria&amp;nbsp;&lt;br&gt;&amp;nbsp;+ orderBy(ob:String) : SearchCriteria&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="300" width="410" x="910" y="-560" as="geometry" />
+        </mxCell>
+        <mxCell id="fnHosCAE6sb-_03uiToD-3" edge="1" parent="1" source="0-AIdlXf6G0R9j5GUKev-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.395;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;endSize=20;" target="fnHosCAE6sb-_03uiToD-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1650" y="-442" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fnHosCAE6sb-_03uiToD-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="dispastch task search with" vertex="1">
+          <mxGeometry height="30" width="150" x="1400" y="-470" as="geometry" />
+        </mxCell>
+        <mxCell id="fnHosCAE6sb-_03uiToD-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="recieves task search with" vertex="1">
+          <mxGeometry height="30" width="150" x="715" y="-440" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-4" edge="1" parent="1" source="kX_WrqeAqtLXjT9yc87H-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=open;endFill=0;endSize=9;dashed=1;dashPattern=8 8;" target="kX_WrqeAqtLXjT9yc87H-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-1" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Console&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;– taskCatalog: TaskCatalog&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ handleExportMenu(): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ handleOverloadMenu(): void&lt;/p&gt;" vertex="1">
+          <mxGeometry height="110" width="190" x="1100" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-2" edge="1" parent="1" source="kX_WrqeAqtLXjT9yc87H-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.995;entryY=0.179;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=open;endFill=0;endSize=9;dashed=1;dashPattern=8 8;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="242" />
+              <mxPoint x="1020" y="289" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-3" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;Segoe UI&amp;quot;, monospace, sans-serif; font-weight: 700; text-align: start; text-wrap-mode: nowrap;&quot;&gt;ICalGateway&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ exportTask(t: Task): String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ exportProject(p: Project): String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ exportFiltered(&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;tasks: List&amp;lt;Task&amp;gt;): String&lt;/span&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="130" width="230" x="850" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-5" edge="1" parent="1" source="kX_WrqeAqtLXjT9yc87H-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.01;entryY=0.326;entryDx=0;entryDy=0;endArrow=open;endFill=0;endSize=9;dashed=1;dashPattern=8 8;entryPerimeter=0;" target="0-AIdlXf6G0R9j5GUKev-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="415" />
+              <mxPoint x="840" y="420" />
+            </Array>
+            <mxPoint x="1340" y="330" as="sourcePoint" />
+            <mxPoint x="1180" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-6" edge="1" parent="1" source="kX_WrqeAqtLXjT9yc87H-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.107;exitY=0.985;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;endArrow=open;endFill=0;endSize=9;dashed=1;dashPattern=8 8;exitPerimeter=0;" target="0-AIdlXf6G0R9j5GUKev-14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="875" y="487" />
+              <mxPoint x="870" y="487" />
+              <mxPoint x="870" y="962" />
+            </Array>
+            <mxPoint x="1205" y="280" as="sourcePoint" />
+            <mxPoint x="1045" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-8" edge="1" parent="1" source="kX_WrqeAqtLXjT9yc87H-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;endArrow=block;endFill=0;endSize=22;dashed=1;dashPattern=8 8;" target="kX_WrqeAqtLXjT9yc87H-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-10" edge="1" parent="1" source="kX_WrqeAqtLXjT9yc87H-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="kX_WrqeAqtLXjT9yc87H-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-7" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;Segoe UI&amp;quot;, monospace, sans-serif; font-weight: 700; text-align: start; text-wrap-mode: nowrap;&quot;&gt;ICalAdapter&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;0 ical4j: iCal4jLib&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ exportTask(t: Task): String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ exportProject(p: Project): String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ exportFiltered(&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;tasks: List&amp;lt;Task&amp;gt;): String&lt;/span&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="130" width="230" x="1190" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="kX_WrqeAqtLXjT9yc87H-9" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;library&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;span style=&quot;font-family: &amp;quot;Segoe UI&amp;quot;, monospace, sans-serif; font-weight: 700; text-align: start; text-wrap-mode: nowrap;&quot;&gt;iCal4j&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="60" width="110" x="1340" y="250" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
