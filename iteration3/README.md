@@ -18,21 +18,27 @@ java -version
 javac -version
 mvn -version
 Getting Started
+
 1. Clone / download the project
 Place the project folder somewhere on your machine, for example:
 C:\Users\you\Desktop\TaskManagerApp\
+
 2. Open a terminal in that folder
 cd C:\Users\you\Desktop\TaskManagerApp
+
 3. Compile the project
 If using Maven:
 mvn clean compile
+
 4. Run the application
 If using Maven:
 mvn exec:java -Dexec.mainClass="com.soen342.Main"
 If your setup does not support the exec plugin, compile and run manually:
 mvn clean package
 java -cp target\classes com.soen342.Main
+
 Project Structure
+
 TaskManagerApp/
 ├── pom.xml
 └── src/
