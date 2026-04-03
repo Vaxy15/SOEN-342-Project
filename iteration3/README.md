@@ -90,6 +90,7 @@ The .ics export is implemented using the Gateway pattern:
 ExportGateway defines the export contract
 CalendarUtil implements the gateway
 iCal4j is used as the external library
+
 2. Overloaded Collaborator Detection
 The system can identify overloaded collaborators.
 A collaborator is considered overloaded when:
@@ -97,9 +98,11 @@ the number of their assigned open subtasks exceeds their taskLimit
 This allows the user to:
 detect capacity violations
 list overloaded collaborators through the console menu
+
 3. Persistency
 Iteration III includes the persistency layer so that the system no longer relies only on temporary in-memory state during execution.
 The application now supports storing and reloading data between runs, depending on the configured persistence implementation in the project.
+
 4. OCL Constraints
 This iteration formalizes important business rules using Object Constraint Language (OCL), including:
 a task cannot have more than 20 subtasks
