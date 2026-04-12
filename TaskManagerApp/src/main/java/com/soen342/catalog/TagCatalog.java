@@ -2,6 +2,7 @@ package com.soen342.catalog;
 
 import com.soen342.model.Tag;
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.TagTDG;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class TagCatalog {
         }
         Tag tag = new Tag(tagIdCounter++, name);
         try {
-            DBUtil.saveTag(tag);
+            TagTDG.save(tag);
         } catch (SQLException e) {
             tagIdCounter--;
             throw new RuntimeException("Failed to save tag, operation aborted.", e);
@@ -31,6 +32,7 @@ public class TagCatalog {
         return tag;
     }
 
+    //raw data loading - bypasses business logic
     public Tag loadTagFromDataStore(int id, String name) {
         if (findByName(name).isPresent()) {
             throw new IllegalArgumentException("Tag '" + name + "' already exists.");

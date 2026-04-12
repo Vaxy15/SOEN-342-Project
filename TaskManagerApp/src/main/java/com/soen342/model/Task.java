@@ -5,6 +5,9 @@ import com.soen342.model.enums.ActivityType;
 import com.soen342.model.enums.Priority;
 import com.soen342.model.enums.TaskStatus;
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.SubtaskTDG;
+import com.soen342.persistence.TDG.TaskTDG;
+import com.soen342.persistence.TDG.TaskTagTDG;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -78,7 +81,7 @@ public class Task {
         TaskStatus prev = getStatus();
         this.status = TaskStatus.COMPLETED;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.status = prev;
             throw new RuntimeException("Failed to update task, operation aborted.", e);
@@ -91,7 +94,7 @@ public class Task {
         TaskStatus prev = getStatus();
         this.status = TaskStatus.CANCELLED;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.status = prev;
             throw new RuntimeException("Failed to update task, operation aborted.", e);
@@ -104,7 +107,7 @@ public class Task {
         TaskStatus prev = this.status;
         this.status = TaskStatus.OPEN;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.status = prev;
             throw new RuntimeException("Failed to update task, operation aborted.", e);
@@ -117,7 +120,7 @@ public class Task {
     public Subtask addSubtask(String subTitle) {
         Subtask subtask = new Subtask(subTitle);
         try {
-            DBUtil.saveSubtask(subtask, this.taskId);
+            SubtaskTDG.save(subtask, this.taskId);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save subtask, operation aborted.", e);
         }
@@ -130,7 +133,7 @@ public class Task {
     public void removeSubtask(int subtaskId) {
         Subtask subtask = getSubtask(subtaskId);
         try {
-            DBUtil.deleteSubtask(subtaskId);
+            SubtaskTDG.delete(subtaskId);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete subtask, operation aborted.", e);
         }
@@ -184,7 +187,7 @@ public class Task {
     public void addTag(Tag tag) {
         if (!tags.contains(tag)) {
             try {
-                DBUtil.addTagToTask(this.taskId, tag.getTagId());
+                TaskTagTDG.save(this.taskId, tag.getTagId());
             } catch (SQLException e) {
                 throw new RuntimeException("Failed to add tag, operation aborted.", e);
             }
@@ -195,7 +198,7 @@ public class Task {
 
     public void removeTag(Tag tag) {
         try {
-            DBUtil.removeTagFromTask(this.taskId, tag.getTagId());
+            TaskTagTDG.delete(this.taskId, tag.getTagId());
         } catch (SQLException e) {
             throw new RuntimeException("Failed to remove tag, operation aborted.", e);
         }
@@ -212,7 +215,7 @@ public class Task {
         generateOccurrences();
         recordActivity(ActivityType.UPDATED, "Recurrence pattern set.");
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.isRecurring = false;
             this.recurrencePattern = null;
@@ -248,7 +251,7 @@ public class Task {
         Subtask linked = new Subtask("Task for " + collaborator.getName());
         collaborator.assignSubtask(linked);
         try {
-            DBUtil.saveSubtask(linked, this.taskId);
+            SubtaskTDG.save(linked, this.taskId);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save subtask, operation aborted.", e);
         }
@@ -274,7 +277,7 @@ public class Task {
         String oldTitle = this.title;
         this.title = title;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.title = oldTitle;
             throw new RuntimeException("Failed to update task, operation aborted.", e);
@@ -288,7 +291,7 @@ public class Task {
         String oldDescription = this.description;
         this.description = description;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.description = oldDescription;
             throw new RuntimeException("Failed to update task, operation aborted.", e);
@@ -308,7 +311,7 @@ public class Task {
         this.recurrencePattern = null;
         this.isRecurring = false;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.dueDate = oldDueDate;
             this.recurrencePattern = oldPattern;
@@ -326,7 +329,7 @@ public class Task {
         Priority oldPriority = this.priority;
         this.priority = priority;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.priority = oldPriority;
             throw new RuntimeException("Failed to update task, operation aborted.", e);
@@ -341,7 +344,7 @@ public class Task {
         Project oldProject = this.project;
         this.project = project;
         try {
-            DBUtil.editTask(this);
+            TaskTDG.update(this);
         } catch (SQLException e) {
             this.project = oldProject;
             throw new RuntimeException("Failed to update task, operation aborted.", e);

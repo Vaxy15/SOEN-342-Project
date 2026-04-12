@@ -2,6 +2,7 @@ package com.soen342.catalog;
 
 import com.soen342.model.Project;
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.ProjectTDG;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class ProjCatalog {
         Project project = new Project(projectIdCounter++, name, description);
 
         try {
-            DBUtil.saveProject(project);
+            ProjectTDG.save(project);
         } catch (SQLException e) {
             projectIdCounter--;
             throw new RuntimeException("Failed to save project, operation aborted.", e);
@@ -34,6 +35,7 @@ public class ProjCatalog {
         return project;
     }
 
+    // raw data loading - bypasses business logic
     public void loadProjFromDataStore(int id, String name, String description) {
         if (findByName(name).isPresent()) {
             throw new IllegalArgumentException(
@@ -70,7 +72,7 @@ public class ProjCatalog {
         // Remove all task-project links before deleting
         new ArrayList<>(project.getTasks()).forEach(project::removeTask);
         try {
-            DBUtil.deleteProject(project.getProjectId());
+            ProjectTDG.delete(project.getProjectId());
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete project, operation aborted.", e);
         }
@@ -90,7 +92,7 @@ public class ProjCatalog {
         }
         if (newDescription != null) project.setDescription(newDescription);
         try {
-            DBUtil.editProject(project);
+            ProjectTDG.update(project);
         } catch (SQLException e) {
             project.setName(oldName);
             project.setDescription(oldDescription);

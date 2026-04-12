@@ -375,7 +375,7 @@ public class DBManager {
                         task.addActivityRaw(entry);
                     }
                 }
-                history.recordRaw(entry);
+                history.loadEntryFromDataStore(entry);
             }
         }  catch (SQLException e){
             throw  new RuntimeException("SQL Error while loading database schema", e);
