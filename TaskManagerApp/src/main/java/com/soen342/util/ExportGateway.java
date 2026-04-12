@@ -1,5 +1,6 @@
 package com.soen342.util;
 
+import com.soen342.model.Project;
 import com.soen342.model.Task;
 import net.fortuna.ical4j.validate.ValidationException;
 
@@ -12,7 +13,7 @@ public interface ExportGateway {
      *
      * Gateway Pattern specification
      * <p>
-     *     exports list of files to ics format, given a file location
+     *     exports list of tasks to ics format, given a file location
      * </p>
      *
      * @param tasks
@@ -20,5 +21,33 @@ public interface ExportGateway {
      * @throws FileAlreadyExistsException if file already exists at given location
      * @throws IOException if an error occurs during file write
      */
-    public void exportTasksICS(List<Task> tasks, String filename) throws FileAlreadyExistsException, IOException;
+    public void exportFilteredICS(List<Task> tasks, String filename) throws FileAlreadyExistsException, IOException;
+
+    /**
+     *
+     * Gateway Pattern specification
+     * <p>
+     *     exports a single task to ics format, given a file location
+     * </p>
+     *
+     * @param task
+     * @param filename
+     * @throws FileAlreadyExistsException if file already exists at given location
+     * @throws IOException if an error occurs during file write
+     */
+    public void exportTaskICS(Task task, String filename) throws FileAlreadyExistsException, IOException;
+
+    /**
+     *
+     * Gateway Pattern specification
+     * <p>
+     *     exports all tasks within a project to ics format, given a file location
+     * </p>
+     *
+     * @param project
+     * @param filename
+     * @throws FileAlreadyExistsException if file already exists at given location
+     * @throws IOException if an error occurs during file write
+     */
+    public void exportProjectICS(Project project, String filename) throws FileAlreadyExistsException, IOException;
 }

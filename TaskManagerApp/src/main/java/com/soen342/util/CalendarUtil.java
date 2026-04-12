@@ -1,5 +1,6 @@
 package com.soen342.util;
 
+import com.soen342.model.Project;
 import com.soen342.model.Subtask;
 import com.soen342.model.Task;
 import com.soen342.model.TaskOccurrence;
@@ -123,7 +124,7 @@ public class CalendarUtil implements ExportGateway{
 
 
     // gateway implementation
-    public void exportTasksICS(List<Task> tasks, String fileName) throws FileAlreadyExistsException, IOException {
+    public void exportFilteredICS(List<Task> tasks, String fileName) throws FileAlreadyExistsException, IOException {
         Path path = Path.of(fileName);
         // this is to verify if location already has an existing file
         Files.createFile(path);
@@ -131,6 +132,50 @@ public class CalendarUtil implements ExportGateway{
 
         Calendar calendar = new Calendar();
         for (Task task : tasks) {
+            List<VToDo> vtodos = parseVToDoComponentList(task);
+            for (VToDo vtodo : vtodos) {
+                calendar.add(vtodo);
+            }
+        }
+
+        CalendarOutputter outputter = new CalendarOutputter();
+        try (FileOutputStream fos = new FileOutputStream(path.toFile())) {
+            outputter.output(calendar, fos);
+            fos.flush();
+        } catch (ValidationException e) {
+            throw new RuntimeException("Error validating calendar, parsing doesnt follow RFC 5545", e);
+        }
+    }
+
+    public void exportTaskICS(Task task, String fileName) throws FileAlreadyExistsException, IOException {
+        Path path = Path.of(fileName);
+        // this is to verify if location already has an existing file
+        Files.createFile(path);
+        Files.delete(path);
+
+        Calendar calendar = new Calendar();
+        List<VToDo> vtodos = parseVToDoComponentList(task);
+        for (VToDo vtodo : vtodos) {
+            calendar.add(vtodo);
+        }
+
+        CalendarOutputter outputter = new CalendarOutputter();
+        try (FileOutputStream fos = new FileOutputStream(path.toFile())) {
+            outputter.output(calendar, fos);
+            fos.flush();
+        } catch (ValidationException e) {
+            throw new RuntimeException("Error validating calendar, parsing doesnt follow RFC 5545", e);
+        }
+    }
+
+    public void exportProjectICS(Project project, String fileName) throws FileAlreadyExistsException, IOException {
+        Path path = Path.of(fileName);
+        // this is to verify if location already has an existing file
+        Files.createFile(path);
+        Files.delete(path);
+
+        Calendar calendar = new Calendar();
+        for (Task task : project.getTasks()) {
             List<VToDo> vtodos = parseVToDoComponentList(task);
             for (VToDo vtodo : vtodos) {
                 calendar.add(vtodo);

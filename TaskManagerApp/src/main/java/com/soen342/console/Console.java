@@ -751,7 +751,8 @@ public class Console {
         System.out.println("\n--- ICS EXPORT ---");
         System.out.println("1. Export Single task");
         System.out.println("2. Export all tasks");
-        System.out.println("3. Export task search");
+        System.out.println("3. Export Project tasks");
+        System.out.println("4. Export task search");
         System.out.print("Choice: ");
 
         String choice = scanner.nextLine().trim();
@@ -763,6 +764,9 @@ public class Console {
                handleExportAllTasks();
             }
             case "3" -> {
+                handleExportProjTasks();
+            }
+            case "4" -> {
                handleICSExportFromSearch();
             }
             default -> System.out.println("Invalid option.");
@@ -784,6 +788,14 @@ public class Console {
             return;
         }
         ICSExport(tasks);
+    }
+
+    private void handleExportProjTasks(){
+        System.out.print("Project name: ");
+        String name = scanner.nextLine().trim();
+        projCatalog.findByName(name).ifPresentOrElse(project -> {
+            ICSExport(project.getTasks());
+        }, () -> System.out.println("[Error] Project not found."));
     }
 
     private void handleICSExportFromSearch() {
@@ -817,7 +829,7 @@ public class Console {
         System.out.println("Exporting...");
         ExportGateway exportUtil = new CalendarUtil();
         try{
-            exportUtil.exportTasksICS(tasks,path);
+            exportUtil.exportFilteredICS(tasks,path);
         } catch (FileAlreadyExistsException e) {
             System.out.println("[Error] File already exists.");
         } catch (IOException e) {
