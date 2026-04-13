@@ -1,9 +1,9 @@
 package com.soen342.model;
 
+import java.sql.SQLException;
+
 import com.soen342.model.enums.TaskStatus;
 import com.soen342.persistence.DBUtil;
-
-import java.sql.SQLException;
 
 public class Subtask {
 
@@ -71,6 +71,14 @@ public class Subtask {
     }
 
     public void reopen() {
+        // OCL: no collaborator must be overloaded
+        if (linkedCollaborator != null && !linkedCollaborator.hasCapacity()) {
+            throw new IllegalStateException(
+                "Cannot reopen: collaborator '" + linkedCollaborator.getName()
+                + "' would exceed their open task limit of "
+                + linkedCollaborator.getCategory().getMaxOpenTasks() + "."
+            );
+        }
         TaskStatus prev = subStatus;
         this.subStatus = TaskStatus.OPEN;
         try {

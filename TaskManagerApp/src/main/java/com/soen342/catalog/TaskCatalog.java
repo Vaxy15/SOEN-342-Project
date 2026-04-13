@@ -1,12 +1,5 @@
 package com.soen342.catalog;
 
-import com.soen342.model.Project;
-import com.soen342.model.Tag;
-import com.soen342.model.Task;
-import com.soen342.model.enums.Priority;
-import com.soen342.model.enums.TaskStatus;
-import com.soen342.persistence.DBUtil;
-
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,6 +9,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.soen342.model.Project;
+import com.soen342.model.Tag;
+import com.soen342.model.Task;
+import com.soen342.model.enums.Priority;
+import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBUtil;
 
 /**
  * Manages all tasks in the system. Owned by Console (1 instance).
@@ -29,6 +29,15 @@ public class TaskCatalog {
     // --- CRUD ---
 
     public Task createTask(String title, String description, Priority priority) {
+        // OCL: open tasks without a due date must not exceed 50
+        long openWithoutDueDate = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.OPEN && t.getDueDate() == null)
+                .count();
+        if (openWithoutDueDate >= 50) {
+            throw new IllegalStateException(
+                "Cannot create task: the system already has 50 open tasks without a due date (OCL constraint).");
+        }
+
         Task task = new Task(TaskIdCounter++, title, description, priority);
         try {
             DBUtil.saveTask(task);

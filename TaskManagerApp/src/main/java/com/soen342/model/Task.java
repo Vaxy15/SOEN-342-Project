@@ -1,16 +1,16 @@
 package com.soen342.model;
 
-import com.soen342.catalog.History;
-import com.soen342.model.enums.ActivityType;
-import com.soen342.model.enums.Priority;
-import com.soen342.model.enums.TaskStatus;
-import com.soen342.persistence.DBUtil;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.soen342.catalog.History;
+import com.soen342.model.enums.ActivityType;
+import com.soen342.model.enums.Priority;
+import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBUtil;
 
 public class Task {
 
@@ -115,6 +115,9 @@ public class Task {
     // --- Subtask Management ---
 
     public Subtask addSubtask(String subTitle) {
+        if (subtasks.size() >= 20) {
+            throw new IllegalStateException("A task cannot have more than 20 subtasks (OCL constraint).");
+        }
         Subtask subtask = new Subtask(subTitle);
         try {
             DBUtil.saveSubtask(subtask, this.taskId);
@@ -124,7 +127,6 @@ public class Task {
         subtasks.add(subtask);
         recordActivity(ActivityType.UPDATED, "Subtask '" + subTitle + "' added.");
         return subtask;
-
     }
 
     public void removeSubtask(int subtaskId) {
@@ -147,19 +149,28 @@ public class Task {
     public void markSubtaskComplete(int subtaskId) {
         Subtask subtask = getSubtask(subtaskId);
         subtask.complete();
-        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' cancelled.");
+        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' completed.");
     }
 
     public void markSubtaskCancelled(int subtaskId) {
         Subtask subtask = getSubtask(subtaskId);
         subtask.cancel();
-        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' completed.");
+        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' cancelled.");
     }
 
-    public void markSubtaskReopen(int subtaskId) {
-        Subtask subtask = getSubtask(subtaskId);
-        subtask.reopen();
-        recordActivity(ActivityType.UPDATED, "Subtask '" + subtask.getSubTitle() + "' reopened.");
+    public void reopen() {
+        if (StatusCheck(TaskStatus.OPEN)) return;
+
+        // OCL: reopening subtasks linked to collaborators may cause overload — checked in Subtask.reopen()
+        TaskStatus prev = this.status;
+        this.status = TaskStatus.OPEN;
+        try {
+            DBUtil.editTask(this);
+        } catch (SQLException e) {
+            this.status = prev;
+            throw new RuntimeException("Failed to update task, operation aborted.", e);
+        }
+        recordActivity(ActivityType.UPDATED, "Task '" + title + "' reopened.");
     }
 
     public boolean allSubtasksComplete() {
