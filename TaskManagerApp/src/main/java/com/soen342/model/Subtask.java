@@ -4,6 +4,10 @@ import java.sql.SQLException;
 
 import com.soen342.model.enums.TaskStatus;
 import com.soen342.persistence.DBUtil;
+<<<<<<< HEAD
+=======
+import com.soen342.persistence.TDG.SubtaskTDG;
+>>>>>>> e09fa06 (fixed conflics)
 
 public class Subtask {
 
