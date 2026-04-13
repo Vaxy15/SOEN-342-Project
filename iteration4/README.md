@@ -10,7 +10,7 @@
 The demo below is a scripted, narrated terminal walkthrough of all ten features.
 It runs entirely in the browser — no installation required.
 
-**[▶ Launch Interactive Demo](https://github.com/Vaxy15/SOEN-342-Project/iteration4/demo.html)**
+**[▶ Launch Interactive Demo](https://Vaxy15.github.io/SOEN-342-Project/iteration4/demo.html)**
 
 > **To set up the link:** enable GitHub Pages on your repository (Settings → Pages → Branch: `main`, folder: `/` or `/docs`), then replace `YOUR_USERNAME` and `YOUR_REPO` above.  
 > Alternatively, open `demo.html` locally — just serve it from the `tts-sync/` folder with `node serve.js` and visit `http://localhost:3000`.
