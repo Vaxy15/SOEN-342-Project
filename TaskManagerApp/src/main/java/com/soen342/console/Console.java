@@ -1,25 +1,34 @@
 package com.soen342.console;
 
-import com.soen342.catalog.*;
-import com.soen342.model.*;
-import com.soen342.model.enums.*;
-import com.soen342.persistence.DBManager;
-import com.soen342.util.CalendarUtil;
-import com.soen342.util.CsvUtil;
-import com.soen342.util.ExportGateway;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Collectors;
+
+import com.soen342.catalog.CollaboratorCatalog;
+import com.soen342.catalog.History;
+import com.soen342.catalog.ProjCatalog;
+import com.soen342.catalog.TagCatalog;
+import com.soen342.catalog.TaskCatalog;
+import com.soen342.model.Collaborator;
+import com.soen342.model.Project;
+import com.soen342.model.RecurrencePattern;
+import com.soen342.model.Subtask;
+import com.soen342.model.Tag;
+import com.soen342.model.Task;
+import com.soen342.model.enums.CollaboratorCategory;
+import com.soen342.model.enums.Priority;
+import com.soen342.model.enums.RecurrenceType;
+import com.soen342.model.enums.TaskStatus;
+import com.soen342.persistence.DBManager;
+import com.soen342.util.CalendarUtil;
+import com.soen342.util.CsvUtil;
+import com.soen342.util.ExportGateway;
 
 /**
  * Console is the top-level controller (facade) of the system.
@@ -340,10 +349,11 @@ public class Console {
     private void markSubtaskComplete() {
         Task task = promptTaskById();
         if (task == null) return;
-        List<Subtask> incompleteSubtasks = task.getSubtasks().stream().
-                filter((s) -> s.getSubStatus() != TaskStatus.OPEN).toList();
-        if (incompleteSubtasks.isEmpty()) { System.out.println("No incomplete subtasks found."); return; }
-        incompleteSubtasks.forEach(System.out::println);
+        List<Subtask> openSubtasks = task.getSubtasks().stream()
+                .filter(s -> s.getSubStatus() == TaskStatus.OPEN)
+                .toList();
+        if (openSubtasks.isEmpty()) { System.out.println("No open subtasks found."); return; }
+        openSubtasks.forEach(System.out::println);
         System.out.print("Subtask ID: ");
         try {
             int id = Integer.parseInt(scanner.nextLine().trim());
@@ -361,17 +371,16 @@ public class Console {
     private void markSubtaskCancelled() {
         Task task = promptTaskById();
         if (task == null) return;
-        List<Subtask> uncancelledSubtasks = task.getSubtasks().stream().
-                filter((s) -> s.getSubStatus() != TaskStatus.CANCELLED).toList();
-        if (uncancelledSubtasks.isEmpty()) { System.out.println("No subtasks which can be cancelled found."); return; }
-        uncancelledSubtasks.forEach(System.out::println);
+        List<Subtask> cancellableSubtasks = task.getSubtasks().stream()
+                .filter(s -> s.getSubStatus() != TaskStatus.CANCELLED)
+                .toList();
+        if (cancellableSubtasks.isEmpty()) { System.out.println("No subtasks which can be cancelled found."); return; }
+        cancellableSubtasks.forEach(System.out::println);
         System.out.print("Subtask ID: ");
         try {
             int id = Integer.parseInt(scanner.nextLine().trim());
             task.markSubtaskCancelled(id);
             System.out.println("[OK] Subtask cancelled.");
-            if (task.allSubtasksComplete())
-                System.out.println("[Info] All subtasks done (parent task NOT auto-completed).");
         } catch (NumberFormatException e) {
             System.out.println("[Error] Invalid ID.");
         } catch (IllegalArgumentException e) {
@@ -591,6 +600,7 @@ public class Console {
         System.out.println("\n--- COLLABORATORS ---");
         System.out.println("1. Create Collaborator");
         System.out.println("2. List All Collaborators");
+        System.out.println("3. List Overloaded Collaborators");
         System.out.print("Choice: ");
 
         String choice = scanner.nextLine().trim();
@@ -610,6 +620,17 @@ public class Console {
                 List<Collaborator> list = collaboratorCatalog.getAllCollaborators();
                 if (list.isEmpty()) System.out.println("No collaborators found.");
                 else list.forEach(System.out::println);
+            }
+            case "3" -> {
+                List<Collaborator> overloaded = collaboratorCatalog.getAllCollaborators().stream()
+                        .filter(c -> c.countOpenTasks() > c.getCategory().getMaxOpenTasks())
+                        .toList();
+                if (overloaded.isEmpty()) {
+                    System.out.println("No overloaded collaborators.");
+                } else {
+                    System.out.println("--- Overloaded Collaborators ---");
+                    overloaded.forEach(c -> System.out.println(c + " [OVERLOADED]"));
+                }
             }
             default -> System.out.println("Invalid option.");
         }
@@ -843,7 +864,8 @@ public class Console {
     // =========================================================================
 
     private Task promptTaskById() {
-        //TODO print ids before scan so user knows what hes selecting
+        System.out.println("\n--- TASKS ---");
+        taskCatalog.getAllTasks().forEach(System.out::println);
         System.out.print("Task ID: ");
         try {
             int id = Integer.parseInt(scanner.nextLine().trim());

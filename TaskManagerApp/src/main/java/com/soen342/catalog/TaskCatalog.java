@@ -5,7 +5,6 @@ import com.soen342.model.Tag;
 import com.soen342.model.Task;
 import com.soen342.model.enums.Priority;
 import com.soen342.model.enums.TaskStatus;
-import com.soen342.persistence.DBUtil;
 import com.soen342.persistence.TDG.TaskTDG;
 
 import java.sql.SQLException;
@@ -30,6 +29,15 @@ public class TaskCatalog {
     // --- CRUD ---
 
     public Task createTask(String title, String description, Priority priority) {
+        // OCL: open tasks without a due date must not exceed 50
+        long openWithoutDueDate = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.OPEN && t.getDueDate() == null)
+                .count();
+        if (openWithoutDueDate >= 50) {
+            throw new IllegalStateException(
+                "Cannot create task: the system already has 50 open tasks without a due date (OCL constraint).");
+        }
+
         Task task = new Task(TaskIdCounter++, title, description, priority);
         try {
             TaskTDG.save(task);
