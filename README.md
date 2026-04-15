@@ -14,6 +14,7 @@
 ### Prerequisists
 
 java 21
+
 maven (either installed system-wide or bundled with intellij)
 
 ### run with intellij
