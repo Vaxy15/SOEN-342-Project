@@ -366,7 +366,7 @@ iteration4/
 </p>
 
 ---
-For a better view of the diagrams, navigate to [public folder](public/) to see the raw files.
+#### For a better view of the diagrams, navigate to [here](public/) to see the raw files.
 ---
 
 *SOEN 342 — Software Requirements and Specifications · Concordia University · Winter 2026*
