@@ -333,5 +333,8 @@ iteration4/
   <img src="public/UMLStateMachine.drawio.png" alt="State Machine Diagram" width="950">
 </p>
 
+---
+For a better view of the diagrams, navigate to [public folder](public/) to see the raw files.
+---
 
 *SOEN 342 — Software Requirements and Specifications · Concordia University · Winter 2026*
