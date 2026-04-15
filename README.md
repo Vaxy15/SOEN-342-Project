@@ -8,9 +8,9 @@
 |Ariberto Bello Veras    | 40319600    |
 
 
-## Doc
+## Deliverables
 
-see ```/iteration4``` for final documentation
+See [Iteration 4 README](iteration4/README.md) for final deliverables.
 
 ## Run Instructions
 
