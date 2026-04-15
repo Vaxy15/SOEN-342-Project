@@ -323,9 +323,45 @@ iteration4/
 
 ## Object Constraints
 
-<p align="center">
-  <img src="public/domain/DomainModel.drawio.png" alt="Object Constraints (Domain Model with OCL)" width="950">
-</p>
+## 📦 Object Constraints (OCL)
+
+> ### 🧩 Task — Subtask Limit
+> **Constraint:** A task cannot have more than 20 sub-tasks.  
+> ```ocl
+> context Task
+> inv: self.subTasks->size() <= 20
+> ```
+
+---
+
+> ### 📅 Task — Open Tasks Without Due Date Limit
+> **Constraint:** The number of open tasks without a due date should not exceed 50.  
+> ```ocl
+> context Task
+> inv: Task.allInstances()
+>     ->select(t | t.status = TaskStatus::OPEN and t.dueDate.oclIsUndefined())
+>     ->size() <= 50
+> ```
+
+---
+
+> ### 👤 Collaborator — Capacity Must Be Positive
+> **Constraint:** The limit for open tasks for each collaborator category must be a positive integer.  
+> ```ocl
+> context Collaborator
+> inv: self.capacity > 0
+> ```
+
+---
+
+> ### 🚫 Collaborator — No Overload
+> **Constraint:** No collaborator must be overloaded (assigned open tasks must not exceed capacity).  
+> ```ocl
+> context Collaborator
+> inv: self.assignedTasks
+>     ->select(t | t.status = TaskStatus::OPEN)
+>     ->size() <= self.capacity
+> ```
 
 ## State Machine
 
