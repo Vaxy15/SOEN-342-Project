@@ -212,16 +212,18 @@ iteration4/
   <img src="public/use_case/UMLUseCase_it3(Search,CSV,ICS).drawio.png" alt=" util Use Case Diagram" width="950">
 </p>
 
-### 
-
 ## Domain Model
+
+<p align="center">
+  <img src="public/domain/DomainModel.drawio.png" alt=" domain model diagram" width="950">
+</p>
 
 ## System Sequence Diagrams
 
 ## Operation Contracts
 
 - **System Operations & Operation Contracts**  
-  → [Open PDF](System%20Operations%20%26%20Operation%20Contracts.pdf)
+  → [Open PDF](../iteration1/System%20Operations%20%26%20Operation%20Contracts.pdf)
 
 ## Interaction Diagrams
 
