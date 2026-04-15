@@ -4,6 +4,25 @@
 > A Java CLI application for managing tasks, projects, recurring schedules, collaborators, and data import/export — backed by SQLite persistence.
 
 ---
+## 🔗 Quick Links
+
+- [🎬 Interactive Demo](#-interactive-demo)
+- [🚀 Running the Application](#-running-the-application)
+- [✨ Features](#-features)
+- [🏗 Architecture](#-architecture)
+- [📁 Folder Structure](#-folder-structure)
+- [📋 Iteration 4 Checklist](#-iteration-4-checklist)
+- [Use Case Diagrams](#use-case-diagrams)
+- [Domain Model](#domain-model)
+- [System Sequence Diagrams](#system-sequence-diagrams)
+- [Operation Contracts](#operation-contracts)
+- [Interaction Diagrams](#interaction-diagrams)
+- [Class Diagram](#class-diagram)
+- [Data Model](#data-model)
+- [Object Constraints](#object-constraints)
+- [State Machine](#state-machine)
+
+---
 
 ## 🎬 Interactive Demo
 
@@ -172,5 +191,24 @@ iteration4/
 - [x] SQLite persistence — full round-trip verified on relaunch
 
 ---
+
+## Use Case Diagrams
+
+## Domain Model
+
+## System Sequence Diagrams
+
+## Operation Contracts
+
+## Interaction Diagrams
+
+## Class Diagram
+
+## Data Model
+
+## Object Constraints
+
+## State Machine
+
 
 *SOEN 342 — Software Requirements and Specifications · Concordia University · Winter 2026*
