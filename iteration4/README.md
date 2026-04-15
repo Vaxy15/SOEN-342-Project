@@ -319,13 +319,9 @@ iteration4/
   <img src="public/domain/Soen-342_Data-Model.drawio.png" alt="Data Model Diagram" width="950">
 </p>
 
----
-
 ## Object Constraints
 
-## 📦 Object Constraints (OCL)
-
-> ### 🧩 Task — Subtask Limit
+> ### Task — Subtask Limit
 > **Constraint:** A task cannot have more than 20 sub-tasks.  
 > ```ocl
 > context Task
@@ -334,7 +330,7 @@ iteration4/
 
 ---
 
-> ### 📅 Task — Open Tasks Without Due Date Limit
+> ### Task — Open Tasks Without Due Date Limit
 > **Constraint:** The number of open tasks without a due date should not exceed 50.  
 > ```ocl
 > context Task
@@ -345,7 +341,7 @@ iteration4/
 
 ---
 
-> ### 👤 Collaborator — Capacity Must Be Positive
+> ### Collaborator — Capacity Must Be Positive
 > **Constraint:** The limit for open tasks for each collaborator category must be a positive integer.  
 > ```ocl
 > context Collaborator
@@ -354,7 +350,7 @@ iteration4/
 
 ---
 
-> ### 🚫 Collaborator — No Overload
+> ### Collaborator — No Overload
 > **Constraint:** No collaborator must be overloaded (assigned open tasks must not exceed capacity).  
 > ```ocl
 > context Collaborator
