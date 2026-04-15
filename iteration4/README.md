@@ -220,6 +220,54 @@ iteration4/
 
 ## System Sequence Diagrams
 
+### Create Task
+
+<p align="center">
+  <img src="public/SSD/CreateTaskSSD.drawio.png" alt="Create Task SSD" width="950">
+</p>
+
+### Edit Task
+
+<p align="center">
+  <img src="public/SSD/EditTaskSSD.drawio (1).png" alt="Edit Task SSD" width="950">
+</p>
+
+### Add Subtask
+
+<p align="center">
+  <img src="public/SSD/addASubTaskSSD.drawio.png" alt="Add Subtask SSD" width="950">
+</p>
+
+### Assign Task to Project
+
+<p align="center">
+  <img src="public/SSD/AssignTaskToProj.drawio.png" alt="Assign Task to Project SSD" width="950">
+</p>
+
+### Link Collaborator
+
+<p align="center">
+  <img src="public/SSD/LinkCollaboratorSSD.drawio.png" alt="Link Collaborator SSD" width="950">
+</p>
+
+### Search Task
+
+<p align="center">
+  <img src="public/SSD/searchTaskSSD.drawio.png" alt="Search Task SSD" width="950">
+</p>
+
+### Import CSV
+
+<p align="center">
+  <img src="public/SSD/importCSVSSD.drawio.png" alt="Import CSV SSD" width="950">
+</p>
+
+### Project Creation
+
+<p align="center">
+  <img src="public/SSD/ProjectCreation.drawio.png" alt="Project Creation SSD" width="950">
+</p>
+
 ## Operation Contracts
 
 - **System Operations & Operation Contracts**  
@@ -227,13 +275,63 @@ iteration4/
 
 ## Interaction Diagrams
 
+### Create Task Sequence Diagram
+
+<p align="center">
+  <img src="public/interaction/CreateTaskSequenceDiagram.drawio.png" alt="Create Task Sequence Diagram" width="950">
+</p>
+
+### Create Subtask Sequence Diagram
+
+<p align="center">
+  <img src="public/interaction/CreateSubtaskSequenceDiagram.drawio.png" alt="Create Subtask Sequence Diagram" width="950">
+</p>
+
+### Search Task Sequence Diagram
+
+<p align="center">
+  <img src="public/interaction/searchTaskSequenceDiagram.drawio.png" alt="Search Task Sequence Diagram" width="950">
+</p>
+
+### Export Sequence Diagram
+
+<p align="center">
+  <img src="public/interaction/ExportSD.drawio.png" alt="Export Sequence Diagram" width="950">
+</p>
+
 ## Class Diagram
+
+### Core Class Diagram
+
+<p align="center">
+  <img src="public/domain/Soen-342_Class-Diagram.drawio.png" alt="Core Class Diagram" width="950">
+</p>
+
+### Utilities Class Diagram
+
+<p align="center">
+  <img src="public/domain/Soen342-Utilities-Class-Diagram.drawio.png" alt="Utilities Class Diagram" width="950">
+</p>
 
 ## Data Model
 
+<p align="center">
+  <img src="public/domain/Soen-342_Data-Model.drawio.png" alt="Data Model Diagram" width="950">
+</p>
+
+---
+
 ## Object Constraints
 
+<p align="center">
+  <img src="public/domain/DomainModel.drawio.png" alt="Object Constraints (Domain Model with OCL)" width="950">
+</p>
+
 ## State Machine
+
+<p align="center">
+  <img src="public/UMLStateMachine.drawio.png" alt="State Machine Diagram" width="950">
+</p>
 
 
 *SOEN 342 — Software Requirements and Specifications · Concordia University · Winter 2026*
