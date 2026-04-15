@@ -194,11 +194,34 @@ iteration4/
 
 ## Use Case Diagrams
 
+### Core Tasks Use Case Diagram
+
+<p align="center">
+  <img src="/public/use_case/UMLUseCaseDiagaram_it3(CoreTasks).drawio.png" alt=" Core Tasks Use Case Diagram" width="950">
+</p>
+
+### Reccurrence pattern and Collaborator assignment Use Case Diagram
+
+<p align="center">
+  <img src="/public/use_case/UMLUseCase_it3(Recurrence&Collab).drawio.png" alt=" reccurence pattern and collab Use Case Diagram" width="950">
+</p>
+
+### CSV and ICS util Use Case Diagram
+
+<p align="center">
+  <img src="public/use_case/UMLUseCase_it3(Search,CSV,ICS).drawio.png" alt=" util Use Case Diagram" width="950">
+</p>
+
+### 
+
 ## Domain Model
 
 ## System Sequence Diagrams
 
 ## Operation Contracts
+
+- **System Operations & Operation Contracts**  
+  → [Open PDF](System%20Operations%20%26%20Operation%20Contracts.pdf)
 
 ## Interaction Diagrams
 
