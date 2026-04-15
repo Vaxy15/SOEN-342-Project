@@ -8,10 +8,11 @@
 |Ariberto Bello Veras    | 40319600    |
 
 
+see ```/iteration4``` for final documentation
 
 ## Run Instructions
 
-### Prerequisists
+### Prerequisistes
 
 java 21
 
