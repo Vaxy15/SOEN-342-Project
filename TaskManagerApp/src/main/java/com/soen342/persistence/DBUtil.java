@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DBUtil {
 
-    public static void saveProject(Project proj) throws SQLException {
+    /*public static void saveProject(Project proj) throws SQLException {
         try (PreparedStatement statement = DBManager.getConnection().prepareStatement(
                 "INSERT OR IGNORE INTO projects (id, name, description) VALUES (?, ?, ?)")) {
             statement.setInt(1,proj.getProjectId());
@@ -347,5 +347,5 @@ public class DBUtil {
             statement.setInt(1, tagId);
             statement.executeUpdate();
         }
-    }
+    }*/
 }

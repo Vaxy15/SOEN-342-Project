@@ -5,7 +5,7 @@ import com.soen342.model.Tag;
 import com.soen342.model.Task;
 import com.soen342.model.enums.Priority;
 import com.soen342.model.enums.TaskStatus;
-import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.TaskTDG;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -29,9 +29,18 @@ public class TaskCatalog {
     // --- CRUD ---
 
     public Task createTask(String title, String description, Priority priority) {
+        // OCL: open tasks without a due date must not exceed 50
+        long openWithoutDueDate = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.OPEN && t.getDueDate() == null)
+                .count();
+        if (openWithoutDueDate >= 50) {
+            throw new IllegalStateException(
+                "Cannot create task: the system already has 50 open tasks without a due date (OCL constraint).");
+        }
+
         Task task = new Task(TaskIdCounter++, title, description, priority);
         try {
-            DBUtil.saveTask(task);
+            TaskTDG.save(task);
         } catch (SQLException e) {
             TaskIdCounter--;
             throw new RuntimeException("Failed to save task, operation aborted.", e);
@@ -40,6 +49,7 @@ public class TaskCatalog {
         return task;
     }
 
+    //raw data loading, bypasses business logic
     public Task loadTaskFromDataStore(int id, String title, String description, Priority priority, TaskStatus status, boolean isRecurring, LocalDate dueDate, LocalDateTime createdOn) {
         if(findById(id).isPresent()) {
             throw new RuntimeException("task with id " + id + " already exists");

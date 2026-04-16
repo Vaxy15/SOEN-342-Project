@@ -1,9 +1,10 @@
 package com.soen342.model;
 
+import java.sql.SQLException;
+
 import com.soen342.model.enums.TaskStatus;
 import com.soen342.persistence.DBUtil;
-
-import java.sql.SQLException;
+import com.soen342.persistence.TDG.SubtaskTDG;
 
 public class Subtask {
 
@@ -41,7 +42,7 @@ public class Subtask {
         String old = this.subTitle;
         this.subTitle = subTitle;
         try {
-            DBUtil.editSubtask(this);
+            SubtaskTDG.update(this);
         } catch (SQLException e) {
             this.subTitle = old;
             throw new RuntimeException("Failed to update subtask, operation aborted.", e);
@@ -52,7 +53,7 @@ public class Subtask {
         TaskStatus prev = subStatus;
         this.subStatus = TaskStatus.COMPLETED;
         try {
-            DBUtil.editSubtask(this);
+            SubtaskTDG.update(this);
         } catch (SQLException e) {
             this.subStatus = prev;
             throw new RuntimeException("Failed to update subtask, operation aborted.", e);
@@ -63,7 +64,7 @@ public class Subtask {
         TaskStatus prev = subStatus;
         this.subStatus = TaskStatus.CANCELLED;
         try {
-            DBUtil.editSubtask(this);
+            SubtaskTDG.update(this);
         } catch (SQLException e) {
             this.subStatus = prev;
             throw new RuntimeException("Failed to update subtask, operation aborted.", e);
@@ -71,10 +72,18 @@ public class Subtask {
     }
 
     public void reopen() {
+        // OCL: no collaborator must be overloaded
+        if (linkedCollaborator != null && !linkedCollaborator.hasCapacity()) {
+            throw new IllegalStateException(
+                "Cannot reopen: collaborator '" + linkedCollaborator.getName()
+                + "' would exceed their open task limit of "
+                + linkedCollaborator.getCategory().getMaxOpenTasks() + "."
+            );
+        }
         TaskStatus prev = subStatus;
         this.subStatus = TaskStatus.OPEN;
         try {
-            DBUtil.editSubtask(this);
+            SubtaskTDG.update(this);
         } catch (SQLException e) {
             this.subStatus = prev;
             throw new RuntimeException("Failed to update subtask, operation aborted.", e);
@@ -88,7 +97,7 @@ public class Subtask {
     public void setLinkedCollaborator(Collaborator collaborator) {
         this.linkedCollaborator = collaborator;
         try {
-            DBUtil.editSubtask(this);
+            SubtaskTDG.update(this);
         } catch (SQLException e) {
             this.linkedCollaborator = null;
             throw new RuntimeException("Failed to update subtask, operation aborted.", e);

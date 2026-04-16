@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.CollaboratorTDG;
 
 /**
  * Manages all collaborators. Owned by Console.
@@ -20,7 +21,7 @@ public class CollaboratorCatalog {
     public Collaborator createCollaborator(String name, CollaboratorCategory category) {
         Collaborator c = new Collaborator(collaboratorIdCounter++, name, category);
         try {
-            DBUtil.saveCollaborator(c);
+            CollaboratorTDG.save(c);
         } catch (SQLException e) {
             collaboratorIdCounter--;
             throw new RuntimeException("Failed to save collaborator, operation aborted.", e);
@@ -29,6 +30,7 @@ public class CollaboratorCatalog {
         return c;
     }
 
+    // raw data loading, bypasses business logic
     public Collaborator loadCollaboratorFromDataStore(int id, String name, CollaboratorCategory category) {
         Collaborator c = new Collaborator(id, name, category);
         collaborators.add(c);

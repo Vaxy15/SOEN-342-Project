@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 //TODO replace runtime exceptions with more specific runtime exceptions
 //TODO should an error in the load/init function abort the program?
-//TODO remember to setup db config so it enforces fk constraints
 
 public class DBManager {
     private static final String DB_URL = "jdbc:sqlite:app.db";
@@ -93,7 +92,7 @@ public class DBManager {
     }
 
 
-    public static void loadTasks(){
+    private static void loadTasks(){
 
         Map<Integer, RecurrencePattern> recurrencePatterns = new HashMap<>();
         try {
@@ -263,7 +262,7 @@ public class DBManager {
         }
     }
 
-    public static void loadCollaborators(){
+    private static void loadCollaborators(){
 
         try {
             Statement statement = connection.createStatement();
@@ -302,7 +301,7 @@ public class DBManager {
         }
     }
 
-    public static void loadTags(){
+    private static void loadTags(){
         try{
             Statement statement = connection.createStatement();
             ResultSet queryResults = statement.executeQuery("select * from tags ORDER BY id");
@@ -316,7 +315,7 @@ public class DBManager {
         }
     }
 
-    public static void loadProjects(){
+    private static void loadProjects(){
 
         try {
             Statement statement = connection.createStatement();
@@ -336,7 +335,7 @@ public class DBManager {
 
     }
 
-    public static void loadHistory(){
+    private static void loadHistory(){
 
         try{
             Statement statement = connection.createStatement();
@@ -375,7 +374,7 @@ public class DBManager {
                         task.addActivityRaw(entry);
                     }
                 }
-                history.recordRaw(entry);
+                history.loadEntryFromDataStore(entry);
             }
         }  catch (SQLException e){
             throw  new RuntimeException("SQL Error while loading database schema", e);

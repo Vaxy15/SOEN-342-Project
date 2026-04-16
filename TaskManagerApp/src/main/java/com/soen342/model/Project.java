@@ -1,6 +1,8 @@
 package com.soen342.model;
 
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.CollaboratorTDG;
+import com.soen342.persistence.TDG.TaskTDG;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class Project {
     public void addTask(Task task) {
         if (!tasks.contains(task)) {
             try {
-                DBUtil.editTask(task); // persists the project_id FK
+                TaskTDG.update(task);
             } catch (SQLException e) {
                 throw new RuntimeException("Failed to link task to project, operation aborted.", e);
             }
@@ -38,7 +40,7 @@ public class Project {
     public void removeTask(Task task) {
         task.setProject(null);
         try {
-            DBUtil.editTask(task);
+            TaskTDG.update(task);
         } catch (SQLException e) {
             task.setProject(this);
             throw new RuntimeException("Failed to unlink task from project, operation aborted.", e);
@@ -51,7 +53,7 @@ public class Project {
     public void addCollaborator(Collaborator collaborator) {
         if (!collaborators.contains(collaborator)) {
             try {
-                DBUtil.linkCollaboratorToProject(collaborator.getCollaboratorId(), this.projectId);
+                CollaboratorTDG.linkToProject(collaborator.getCollaboratorId(), projectId);
             } catch (SQLException e) {
                 throw new RuntimeException("Failed to link collaborator to project, operation aborted.", e);
             }
@@ -61,7 +63,7 @@ public class Project {
 
     public void removeCollaborator(Collaborator collaborator) {
         try {
-            DBUtil.unlinkCollaboratorFromProject(collaborator.getCollaboratorId());
+            CollaboratorTDG.unlinkFromProject(collaborator.getCollaboratorId());
         } catch (SQLException e) {
             throw new RuntimeException("Failed to unlink collaborator from project, operation aborted.", e);
         }

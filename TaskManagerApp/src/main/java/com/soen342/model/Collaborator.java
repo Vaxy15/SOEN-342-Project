@@ -3,6 +3,7 @@ package com.soen342.model;
 import com.soen342.model.enums.CollaboratorCategory;
 import com.soen342.model.enums.TaskStatus;
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.CollaboratorTDG;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class Collaborator {
         String old = this.name;
         this.name = name;
         try {
-            DBUtil.editCollaborator(this);
+            CollaboratorTDG.update(this);
         } catch (SQLException e) {
             this.name = old;
             throw new RuntimeException("Failed to update collaborator, operation aborted.", e);
@@ -82,7 +83,7 @@ public class Collaborator {
         CollaboratorCategory old = this.category;
         this.category = category;
         try {
-            DBUtil.editCollaborator(this);
+            CollaboratorTDG.update(this);
         } catch (SQLException e) {
             this.category = old;
             throw new RuntimeException("Failed to update collaborator, operation aborted.", e);

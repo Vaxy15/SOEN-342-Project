@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOEN 342 — Task Manager Demo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0f0a;color:#ccc;font-family:'Courier New',Courier,monospace;padding:16px;min-height:100vh}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.pill{border:1px solid #2a4a2a;border-radius:20px;padding:3px 10px;font-size:11px;cursor:pointer;color:#4a7a4a;background:none;font-family:inherit;white-space:nowrap;transition:all .12s}
+.pill.on{background:#0d220d;border-color:#3a6a3a;color:#6fff6f}
+.pill:hover:not(.on){border-color:#4a7a4a;color:#8faf8f}
+.term{background:#060e06;border:1px solid #1a3a1a;border-radius:6px;display:flex;flex-direction:column;height:430px}
+.tbar{background:#0a1a0a;padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #1a3a1a;border-radius:6px 6px 0 0;flex-shrink:0}
+.dot{width:10px;height:10px;border-radius:50%}
+.dr{background:#ff5f56}.dy{background:#ffbd2e}.dg{background:#27c93f}
+.ttl{font-size:11px;color:#3a6a3a;flex:1;text-align:center}
+.slab{font-size:11px;font-weight:bold;color:#5dca5d;min-width:160px;text-align:right}
+.tbody{padding:12px 16px;overflow-y:auto;flex:1}
+.tl{font-size:12.5px;line-height:1.65;white-space:pre-wrap;word-break:break-all;min-height:1em}
+.inp{color:#e8e8e8}.ok{color:#3dff3d}.er{color:#ff5f56}
+.nf{color:#6bc8ff}.hd{color:#7fff7f}.dm{color:#1e3a1e}.ou{color:#80a880}.pr{color:#27c93f}
+.cur{display:inline-block;width:7px;height:13px;background:#27c93f;vertical-align:text-bottom;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.vtxt{font-style:italic;font-size:11px;color:#5a8a5a;margin-top:7px;min-height:2.6em;line-height:1.5;padding:0 2px}
+.cbar{display:flex;align-items:center;gap:7px;margin-top:9px;flex-wrap:wrap}
+.cb{border:1px solid #2a4a2a;background:none;color:#8faf8f;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:12px;border-radius:4px;transition:all .13s}
+.cb:hover{border-color:#4a7a4a;color:#ccc;background:#0d220d}
+.spd{border:1px solid #1a3a1a;background:none;color:#4a6a4a;padding:4px 9px;cursor:pointer;font-family:inherit;font-size:11px;border-radius:4px;transition:all .13s}
+.spd.on{border-color:#3a6a3a;color:#7fbf7f}
+.pbar{flex:1;height:3px;background:#121f12;border-radius:2px;overflow:hidden;min-width:60px}
+.pf{height:100%;background:#27c93f;transition:width .2s linear;width:0%}
+.vbtn{border:1px solid #2a4a2a;background:none;color:#8faf8f;padding:6px 12px;cursor:pointer;font-family:inherit;font-size:12px;border-radius:4px;display:flex;align-items:center;gap:6px;transition:all .13s}
+.vbtn:hover{border-color:#4a7a4a;background:#0d220d}
+.vbtn.muted{opacity:.45}
+.vdot{width:7px;height:7px;border-radius:50%;background:#2a4a2a;flex-shrink:0}
+.vdot.pulse{background:#27c93f;animation:vp .8s ease-in-out infinite alternate}
+@keyframes vp{from{opacity:.3}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="pills" id="pills"></div>
+<div class="term">
+  <div class="tbar">
+    <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+    <span class="ttl">TaskManagerApp-1.0-SNAPSHOT.jar</span>
+    <span class="slab" id="slab">1. App Startup</span>
+  </div>
+  <div class="tbody" id="tb"></div>
+</div>
+<div class="vtxt" id="vtxt">Press play or click a section pill to begin.</div>
+<div class="cbar">
+  <button class="cb" id="bprev">&#9664;&#9664; prev</button>
+  <button class="cb" id="bplay">&#9654; play</button>
+  <button class="cb" id="bnext">next &#9654;&#9654;</button>
+  <div class="pbar"><div class="pf" id="pf"></div></div>
+  <button class="vbtn" id="bmute"><span class="vdot" id="vdot"></span>voice</button>
+  <button class="spd on" data-v="1">1x</button>
+  <button class="spd" data-v="2">2x</button>
+  <button class="spd" data-v="3">3x</button>
+</div>
+
+<script>
+// ─── Section table ────────────────────────────────────────────────────────────
+const SECS=[
+  [1,'1. App Startup'],[2,'2. Tasks'],[3,'3. Recurring Task'],
+  [4,'4. Projects'],[5,'5. Collaborators'],[6,'6. Overloaded Check'],
+  [7,'7. Search + CSV'],[8,'8. ICS Export'],[9,'9. CSV Import'],[10,'10. Exit + Relaunch']
+];
+
+// ─── Narrations (for MP3 audio) ───────────────────────────────────────────────
+const NAR={
+  1:"Welcome to the SOEN 342 Personal Task Management System. On launch, the database schema is initialized silently, then all persisted data is loaded into memory. The banner appears, the main menu is printed, and the system is ready for input.",
+  2:"We start by creating a School tag. Then we navigate to Tasks, create Submit SOEN342 Project with high priority and an April twentieth due date, attach the School tag, and confirm the task was saved. We then view it to verify.",
+  3:"Now for recurring tasks. We create Weekly Team Standup with no fixed due date and a weekly recurrence every Monday from April fourteenth through June thirtieth. The system generates twelve occurrences automatically. We view them all, then complete just the first — the others remain open.",
+  4:"Projects group related tasks. We create SOEN-342-Final through the Projects menu, then navigate to Tasks and use option 12 to assign our submission task to it. Viewing the task confirms the project association.",
+  5:"Collaborators are external team members. We create Alice Martin as a junior collaborator — juniors hold up to ten open tasks — and assign her to task 3, which creates a linked subtask. We then create Doctor James Reid as a senior with a limit of two, assign him to tasks one and two successfully, but the third assignment is rejected. The system enforces the OCL constraint at assignment time.",
+  6:"The overloaded collaborators menu lists anyone whose open task count exceeds their category limit. Doctor Reid is at two out of two — at capacity, not over it. The menu correctly reports no overloaded collaborators, confirming the constraint was enforced earlier.",
+  7:"The search menu accepts multiple filter criteria. We filter by keyword SOEN and status OPEN, sorted by priority. Two tasks match. We then export those results directly to CSV from within the search view.",
+  8:"The ICS export uses the Gateway pattern backed by iCal4J. We select option 3 to export all tasks in the SOEN-342-Final project. The system confirms the export and the dot-I-C-S file is ready for any calendar application.",
+  9:"CSV import reads the same column format used for export. We import three new tasks across two projects. Missing entities — a new project and a new collaborator — are auto-created silently. Three tasks are confirmed imported. An unfiltered search now shows all seven tasks.",
+  10:"Selecting zero exits the application and closes the database. On relaunch, the identical banner and main menu appear — loading is always silent. We run an unfiltered search to confirm all seven tasks are fully restored from disk, proving persistence."
+};
+
+// ─── Script DSL ───────────────────────────────────────────────────────────────
+const S  = (id,nm) => ['S',id,nm];   // section boundary — clears screen
+const L  = (c,x)   => ['L',c,x];    // print a line
+const T  = (p,i)   => ['T',p,i];    // type: prompt (print) + input
+const P  = ms      => ['P',ms];     // pause
+const NL = ()      => ['L','dm','']; // blank line (from println("\n..."))
+const V  = t       => ['V',t];      // play narration audio
+
+// CSS classes
+const OK='ok', NF='nf', HD='hd', OU='ou', DM='dm';
+
+// ─── Reusable menu blocks ─────────────────────────────────────────────────────
+// Each menu uses println("\n--- NAME ---"), so NL() precedes the header.
+const MM=[                              // Main menu
+  NL(),L(OU,'--- MAIN MENU ---'),
+  L(OU,'1. Tasks'),         L(OU,'2. Projects'),
+  L(OU,'3. Tags'),          L(OU,'4. Collaborators'),
+  L(OU,'5. Search & View Tasks'),
+  L(OU,'6. CSV Import / Export'),
+  L(OU,'7. ICS Export'),    L(OU,'0. Exit'),
+];
+const TM=[                              // Task menu
+  NL(),L(OU,'--- TASKS ---'),
+  L(OU,'1. Create Task'),             L(OU,'2. View Task Details'),
+  L(OU,'3. Update Task'),             L(OU,'4. Complete Task'),
+  L(OU,'5. Cancel Task'),             L(OU,'6. Add Subtask'),
+  L(OU,'7. Mark Subtask Complete'),   L(OU,'8. Mark Subtask Cancelled'),
+  L(OU,'9. Remove Subtask'),          L(OU,'10. Add Tag to Task'),
+  L(OU,'11. Remove Tag from Task'),   L(OU,'12. Assign Task to Project'),
+  L(OU,'13. Remove Task from Project'),
+  L(OU,'14. View Activity History'),
+  L(OU,'15. Assign Collaborator to Task'),
+];
+const GM=[                              // Tags menu
+  NL(),L(OU,'--- TAGS ---'),
+  L(OU,'1. Create Tag'),L(OU,'2. List All Tags'),
+];
+const PM=[                              // Projects menu
+  NL(),L(OU,'--- PROJECTS ---'),
+  L(OU,'1. Create Project'), L(OU,'2. Update Project'),
+  L(OU,'3. Delete Project'), L(OU,'4. List All Projects'),
+];
+const CM=[                              // Collaborators menu
+  NL(),L(OU,'--- COLLABORATORS ---'),
+  L(OU,'1. Create Collaborator'),
+  L(OU,'2. List All Collaborators'),
+  L(OU,'3. List Overloaded Collaborators'),
+];
+const IM=[                              // ICS Export menu
+  NL(),L(OU,'--- ICS EXPORT ---'),
+  L(OU,'1. Export Single task'),  L(OU,'2. Export all tasks'),
+  L(OU,'3. Export Project tasks'),L(OU,'4. Export task search'),
+];
+const VM=[                              // CSV menu
+  NL(),L(OU,'--- CSV ---'),
+  L(OU,'1. Import from CSV'),
+  L(OU,'2. Export all tasks to CSV'),
+];
+
+// ─── Full script ──────────────────────────────────────────────────────────────
+const SCRIPT=[
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 1 — App Startup
+// start() prints the banner BEFORE loadIntoCatalogs() which is fully silent.
+// The while loop then calls printMainMenu() once.
+// ══════════════════════════════════════════════════════════════════════════════
+S(1,'1. App Startup'), V(NAR[1]),
+T('$ ','java -jar TaskManagerApp-1.0-SNAPSHOT.jar'), P(900),
+L(HD,'========================================'),
+L(HD,' Personal Task Management System'),
+L(HD,' SOEN 342 - Winter 2026'),        // source: " SOEN 342 - Winter 2026" (dash, not em-dash)
+L(HD,'========================================'),
+P(500),
+...MM,                                  // printMainMenu() — blank line then menu items
+T('Choice: ',''), P(900),              // cursor waiting
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 2 — Tasks
+// User chooses 3 → Tags → creates "School" tag → returns to main.
+// Then 1 → Tasks → creates task → returns to main → Tasks → views task.
+// After each submenu the start() while-loop calls printMainMenu() again.
+// ══════════════════════════════════════════════════════════════════════════════
+S(2,'2. Tasks'), V(NAR[2]),
+...MM, T('Choice: ','3'), P(300),
+...GM, T('Choice: ','1'), P(200),
+T('Tag name: ','School'), P(300),
+L(OK,'[OK] Tag created: #School (id=3)'),  // Tag.toString() = "#name (id=N)"
+P(500),
+// handleTagMenu returns → start() reprints main menu
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','1'), P(300),
+// createTask() — exact prompts from source
+T('Task name: ','Submit SOEN342 Project'), P(200),
+T('Description (optional): ','Final deliverable'), P(150),
+T('Priority (LOW/MEDIUM/HIGH): ','HIGH'), P(200),
+T('Due date (yyyy-MM-dd, or blank): ','2026-04-20'), P(200),
+T('Add recurrence pattern? (y/n): ','n'), P(150),
+T('Add tags? (y/n): ','y'), P(150),
+T('Tag name (or blank to stop): ','School'), P(200),
+L(OK,'[OK] Tag added.'),
+T('Tag name (or blank to stop): ',''), P(200),   // blank → exits loop
+// println("[OK] Task created:\n" + task) splits into two visible lines
+L(OK,'[OK] Task created:'),
+// Task.toString(): title [STATUS, PRIORITY] due DATE | Tags: #name  (trailing space from forEach append)
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Tags: #School '),
+P(600),
+// handleTaskMenu returns → main menu reprints → Tasks → View Task Details
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','2'), P(300),
+T('Task ID: ','3'), P(350),
+// viewTaskDetails: println("\n" + task) — \n gives blank line before task
+NL(),
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Tags: #School '),
+// No subtasks or occurrences yet — nothing further printed
+P(900),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 3 — Recurring Task
+// WEEKLY on MON, Apr 14 – Jun 30 → 12 occurrences.
+// completeTask() uses println() for the recurring prompt → user types on next line.
+// ══════════════════════════════════════════════════════════════════════════════
+S(3,'3. Recurring Task'), V(NAR[3]),
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','1'), P(300),
+T('Task name: ','Weekly Team Standup'), P(200),
+T('Description (optional): ','Sprint progress check-in'), P(150),
+T('Priority (LOW/MEDIUM/HIGH): ','MEDIUM'), P(150),
+T('Due date (yyyy-MM-dd, or blank): ',''), P(150),   // no fixed due date
+T('Add recurrence pattern? (y/n): ','y'), P(300),
+// addRecurrencePattern() prints recurrence type hint as a plain line, then prompts
+L(OU,'Recurrence type: DAILY / WEEKLY / MONTHLY / CUSTOM'),
+T('Type: ','WEEKLY'), P(150),
+// exact prompt from source:
+T('Interval (e.g., 1 for every 1 day/week/month): ','1'), P(150),
+T('Start date (yyyy-MM-dd): ','2026-04-14'), P(150),
+T('End date (yyyy-MM-dd): ','2026-06-30'), P(150),
+// WEEKLY branch adds:
+T('Selected days (e.g., MON,WED,FRI): ','MON'), P(400),
+L(OK,'[OK] Recurrence pattern set. 12 occurrences generated.'),
+T('Add tags? (y/n): ','n'), P(200),
+L(OK,'[OK] Task created:'),
+// No due date, isRecurring=true → toString() appends "| Recurring"
+L(NF,'Task #4: Weekly Team Standup [OPEN, MEDIUM] | Recurring'),
+P(600),
+// View task to confirm all 12 occurrences
+// viewTaskDetails prints " Occurrences:" then each via forEach(println)
+// TaskOccurrence.toString() = " Occurrence #N due DATE [STATUS, PRIORITY]"  (leading space)
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','2'), P(300),
+T('Task ID: ','4'), P(350),
+NL(),
+L(NF,'Task #4: Weekly Team Standup [OPEN, MEDIUM] | Recurring'),
+L(OU,' Occurrences:'),
+L(NF,' Occurrence #1 due 2026-04-14 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #2 due 2026-04-21 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #3 due 2026-04-28 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #4 due 2026-05-05 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #5 due 2026-05-12 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #6 due 2026-05-19 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #7 due 2026-05-26 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #8 due 2026-06-02 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #9 due 2026-06-09 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #10 due 2026-06-16 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #11 due 2026-06-23 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #12 due 2026-06-30 [OPEN, MEDIUM]'),
+P(900),
+// Complete Task — option 4
+// completeTask uses println() for the recurring question → cursor on next line
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','4'), P(300),
+T('Task ID: ','4'), P(300),
+// println("This is a recurring task. Complete a specific occurrence? (y/n): ")
+// → printed with newline so user types on the NEXT line (empty prompt)
+L(OU,'This is a recurring task. Complete a specific occurrence? (y/n): '),
+T('','y'), P(300),
+// forEach(println) lists occurrences for selection
+L(NF,' Occurrence #1 due 2026-04-14 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #2 due 2026-04-21 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #3 due 2026-04-28 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #4 due 2026-05-05 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #5 due 2026-05-12 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #6 due 2026-05-19 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #7 due 2026-05-26 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #8 due 2026-06-02 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #9 due 2026-06-09 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #10 due 2026-06-16 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #11 due 2026-06-23 [OPEN, MEDIUM]'),
+L(NF,' Occurrence #12 due 2026-06-30 [OPEN, MEDIUM]'),
+T('Occurrence ID: ','1'), P(400),
+L(OK,'[OK] Occurrence #1 completed.'),
+P(700),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 4 — Projects
+// Project.toString() = "Project #N: name - description (X tasks)"  ← dash, not em-dash
+// assignTaskToProject uses print() prompts → user types on same line
+// ══════════════════════════════════════════════════════════════════════════════
+S(4,'4. Projects'), V(NAR[4]),
+...MM, T('Choice: ','2'), P(300),
+...PM, T('Choice: ','1'), P(300),
+T('Project name (must be unique): ','SOEN-342-Final'), P(200),
+T('Description (optional): ','Semester final project deliverable'), P(300),
+// Project starts with 0 tasks
+L(OK,'[OK] Project created: Project #2: SOEN-342-Final - Semester final project deliverable (0 tasks)'),
+P(700),
+// Assign task 3 to project — Tasks → option 12
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','12'), P(300),
+T('Task ID: ','3'), P(200),
+T('Project name: ','SOEN-342-Final'), P(300),
+L(OK,'[OK] Task assigned to project.'),
+P(500),
+// View task 3 — now shows "| Project: SOEN-342-Final"
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','2'), P(300),
+T('Task ID: ','3'), P(350),
+NL(),
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Project: SOEN-342-Final | Tags: #School '),
+P(900),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 5 — Collaborators
+// createCollaborator: println() for category hint → user types on next line.
+// assignCollaboratorToTask: adds collab to project, then task.assignCollaborator().
+// Subtask.toString() has a leading space: " Subtask #N: title [STATUS] [Collaborator: name]"
+// println("[OK] Collaborator assigned. Linked subtask created: " + linked)
+//   → the string ": " + leading " " in toString() = two spaces before "Subtask".
+// SENIOR limit = 2; third assignment throws IllegalStateException → "[Error] ..."
+// ══════════════════════════════════════════════════════════════════════════════
+S(5,'5. Collaborators'), V(NAR[5]),
+// Create Alice Martin — JUNIOR, open: 0/10
+...MM, T('Choice: ','4'), P(300),
+...CM, T('Choice: ','1'), P(300),
+T('Name: ','Alice Martin'), P(200),
+// println("Category (SENIOR/INTERMEDIATE/JUNIOR): ") → newline → user types on next line
+L(OU,'Category (SENIOR/INTERMEDIATE/JUNIOR): '),
+T('Category: ','JUNIOR'), P(300),
+// Collaborator.toString() = "Collaborator #N: name [CATEGORY, open: X/MAX]"
+L(OK,'[OK] Collaborator created: Collaborator #2: Alice Martin [JUNIOR, open: 0/10]'),
+P(600),
+// Assign Alice (#2) to task 3
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','15'), P(300),
+T('Task ID: ','3'), P(200),
+T('Collaborator ID: ','2'), P(400),
+// Note double space: ": " from string + " Subtask" leading space from toString()
+L(OK,'[OK] Collaborator assigned. Linked subtask created:  Subtask #1: Task for Alice Martin [OPEN] [Collaborator: Alice Martin]'),
+P(700),
+// View task 3 — Task.toString() now includes "\n Progress: X/Y subtasks done"
+// viewTaskDetails then prints " Subtasks:" and each subtask via forEach(println)
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','2'), P(300),
+T('Task ID: ','3'), P(350),
+NL(),
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Project: SOEN-342-Final | Tags: #School '),
+L(OU,' Progress: 0/1 subtasks done'),  // part of Task.toString()
+L(OU,' Subtasks:'),                     // viewTaskDetails println
+L(NF,' Subtask #1: Task for Alice Martin [OPEN] [Collaborator: Alice Martin]'),
+P(700),
+// Create Dr. James Reid — SENIOR, open: 0/2
+...MM, T('Choice: ','4'), P(300),
+...CM, T('Choice: ','1'), P(300),
+T('Name: ','Dr. James Reid'), P(200),
+L(OU,'Category (SENIOR/INTERMEDIATE/JUNIOR): '),
+T('Category: ','SENIOR'), P(300),
+L(OK,'[OK] Collaborator created: Collaborator #3: Dr. James Reid [SENIOR, open: 0/2]'),
+P(600),
+// Assign Dr. Reid (#3) to task 1 — success, open: 1/2
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','15'), P(300),
+T('Task ID: ','1'), P(200),
+T('Collaborator ID: ','3'), P(400),
+L(OK,'[OK] Collaborator assigned. Linked subtask created:  Subtask #2: Task for Dr. James Reid [OPEN] [Collaborator: Dr. James Reid]'),
+P(500),
+// Assign Dr. Reid (#3) to task 2 — success, open: 2/2
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','15'), P(300),
+T('Task ID: ','2'), P(200),
+T('Collaborator ID: ','3'), P(400),
+L(OK,'[OK] Collaborator assigned. Linked subtask created:  Subtask #3: Task for Dr. James Reid [OPEN] [Collaborator: Dr. James Reid]'),
+P(500),
+// Assign Dr. Reid (#3) to task 3 — FAILS
+// assignSubtask: hasCapacity() = (2 < 2) = false → throws IllegalStateException
+// caught in assignCollaboratorToTask → println("[Error] " + e.getMessage())
+...MM, T('Choice: ','1'), P(300),
+...TM, T('Choice: ','15'), P(300),
+T('Task ID: ','3'), P(200),
+T('Collaborator ID: ','3'), P(500),
+L('er',"[Error] Collaborator 'Dr. James Reid' (SENIOR) has reached the limit of 2 open tasks."),
+P(900),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 6 — Overloaded Check
+// filter: countOpenTasks() > getMaxOpenTasks()
+// Dr. Reid: 2 > 2 = false → NOT in overloaded list
+// "No overloaded collaborators." is the empty-list branch
+// ══════════════════════════════════════════════════════════════════════════════
+S(6,'6. Overloaded Check'), V(NAR[6]),
+// List All Collaborators — forEach(println) using Collaborator.toString()
+...MM, T('Choice: ','4'), P(300),
+...CM, T('Choice: ','2'), P(400),
+L(NF,'Collaborator #2: Alice Martin [JUNIOR, open: 1/10]'),
+L(NF,'Collaborator #3: Dr. James Reid [SENIOR, open: 2/2]'),
+P(800),
+// List Overloaded — empty
+...MM, T('Choice: ','4'), P(300),
+...CM, T('Choice: ','3'), P(400),
+L(OU,'No overloaded collaborators.'),
+P(900),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 7 — Search + CSV Export
+// handleSearchMenu: println("\n--- SEARCH & VIEW TASKS ---") → NL() + header
+// taskSearch: all filter prompts use print() → user types on same line
+// println("\n--- Results (N tasks) ---") → NL() + header
+// print("\nExport results to CSV? (y/n): ") → NL() + prompt on same line
+// "[Export] Saved to: " + file.getAbsolutePath()
+//
+// Results: keyword "SOEN" matches Task #1 ("Soen342-Project") and Task #3.
+// Status OPEN filter keeps both. Priority sort: both HIGH (ordinal 2), stable
+// sort preserves due-date order → #1 (Apr 13) before #3 (Apr 20).
+// Task #3 has 1 subtask → toString() includes "\n Progress: 0/1 subtasks done"
+// ══════════════════════════════════════════════════════════════════════════════
+S(7,'7. Search + CSV'), V(NAR[7]),
+...MM, T('Choice: ','5'), P(300),
+NL(),L(OU,'--- SEARCH & VIEW TASKS ---'),
+L(OU,'(Press Enter on any filter to skip it)'),
+T('Keyword (title/description match): ','SOEN'), P(200),
+T('Status (OPEN/COMPLETED/CANCELLED): ','OPEN'), P(200),
+T('Priority (LOW/MEDIUM/HIGH): ',''), P(80),
+T('Project name: ',''), P(80),
+T('Tag name: ',''), P(80),
+T('From date (yyyy-MM-dd): ',''), P(80),
+T('To date (yyyy-MM-dd): ',''), P(80),
+T('Day of week (MON/TUE/WED/THU/FRI/SAT/SUN): ',''), P(80),
+// exact prompt from source:
+T('Order by (duedate/priority/status/title, default=duedate): ','priority'), P(400),
+NL(),L(OU,'--- Results (2 tasks) ---'),
+L(NF,'Task #1: Soen342-Project [OPEN, HIGH] due 2026-04-13 | Project: project1 | Tags: #School '),
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Project: SOEN-342-Final | Tags: #School '),
+// Task #3 has subtask → "\n Progress: 0/1 subtasks done" in its toString()
+L(OU,' Progress: 0/1 subtasks done'),
+P(700),
+// print("\nExport results to CSV? (y/n): ") — \n before prompt
+NL(),T('Export results to CSV? (y/n): ','y'), P(200),
+T('Directory path: ','./exports'), P(400),
+L(OK,'[Export] Saved to: ./exports/tasks_export.csv'),
+P(900),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 8 — ICS Export
+// handleICSMenu → option 3 → handleExportProjTasks → ICSExport(project.getTasks())
+// ICSExport: printf("file path (relative to %s) :", cwd) — printf, NO newline
+//   → user types on the same line as the prompt
+// If no ".ics" suffix, code appends ".ics" to path.
+// println("Exporting...") then println("Successfully exported to " + path + "!")
+// ══════════════════════════════════════════════════════════════════════════════
+S(8,'8. ICS Export'), V(NAR[8]),
+...MM, T('Choice: ','7'), P(300),
+...IM, T('Choice: ','3'), P(200),
+T('Project name: ','SOEN-342-Final'), P(300),
+// printf prompt — no newline, user types on same line
+T('file path (relative to .\\TaskManagerApp) :','soen342_final'), P(400),
+L(OU,'Exporting...'), P(500),
+L(OK,'Successfully exported to soen342_final.ics!'),
+P(900),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 9 — CSV Import
+// CsvUtil.importFromCSV: missing projects and collaborators are auto-created
+// via findOrCreate() which calls createProject()/createCollaborator() silently.
+// No print statements for auto-creation — only "[Import] Done. Imported: X, Skipped: Y"
+//
+// After import, unfiltered search shows 7 tasks sorted by due date ascending.
+// Tasks with no due date use LocalDate.MAX → sort last.
+// Task #6 (Apr 22) < Task #5 (Apr 25) even though #5 was imported first.
+// Task #3 and #5 have subtasks → toString() includes progress lines.
+// ══════════════════════════════════════════════════════════════════════════════
+S(9,'9. CSV Import'), V(NAR[9]),
+...MM, T('Choice: ','6'), P(300),
+...VM, T('Choice: ','1'), P(200),
+T('File path: ','./imports/new_tasks.csv'), P(500),
+// DevOps Sprint project and Bob Smith collaborator created silently — NO output
+L(OK,'[Import] Done. Imported: 3, Skipped: 0'),
+P(700),
+// Unfiltered search to verify all 7 tasks
+...MM, T('Choice: ','5'), P(300),
+NL(),L(OU,'--- SEARCH & VIEW TASKS ---'),
+L(OU,'(Press Enter on any filter to skip it)'),
+T('Keyword (title/description match): ',''), P(80),
+T('Status (OPEN/COMPLETED/CANCELLED): ',''), P(80),
+T('Priority (LOW/MEDIUM/HIGH): ',''), P(80),
+T('Project name: ',''), P(80),
+T('Tag name: ',''), P(80),
+T('From date (yyyy-MM-dd): ',''), P(80),
+T('To date (yyyy-MM-dd): ',''), P(80),
+T('Day of week (MON/TUE/WED/THU/FRI/SAT/SUN): ',''), P(80),
+T('Order by (duedate/priority/status/title, default=duedate): ',''), P(300),
+NL(),L(OU,'--- Results (7 tasks) ---'),
+L(NF,'Task #1: Soen342-Project [OPEN, HIGH] due 2026-04-13 | Project: project1 | Tags: #School '),
+L(NF,'Task #2: task1 [OPEN, LOW] due 2026-04-20 | Project: project1'),
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Project: SOEN-342-Final | Tags: #School '),
+L(OU,' Progress: 0/1 subtasks done'),  // Subtask #1 (Alice Martin) still OPEN
+L(NF,'Task #6: Write Unit Tests [OPEN, MEDIUM] due 2026-04-22 | Project: SOEN-342-Final'),
+L(NF,'Task #5: Design Database Schema [OPEN, HIGH] due 2026-04-25 | Project: SOEN-342-Final'),
+L(OU,' Progress: 0/1 subtasks done'),  // Subtask "Draw ERD diagram" from CSV row 1
+L(NF,'Task #7: Deploy to AWS [OPEN, LOW] due 2026-05-01 | Project: DevOps Sprint'),
+// Task #4 has no due date → LocalDate.MAX → sorts last
+L(NF,'Task #4: Weekly Team Standup [OPEN, MEDIUM] | Recurring'),
+NL(),T('Export results to CSV? (y/n): ','n'), P(200),
+P(800),
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SECTION 10 — Exit + Relaunch
+// "0" → running=false → println("Goodbye!"); DBManager.close() is silent.
+// Relaunch: identical banner, identical menu — loading is always silent.
+// We search to prove persistence: same 7 tasks restored from disk.
+// ══════════════════════════════════════════════════════════════════════════════
+S(10,'10. Exit + Relaunch'), V(NAR[10]),
+...MM, T('Choice: ','0'), P(400),
+L(OK,'Goodbye!'),
+P(1400),
+// ─── relaunch ───
+NL(),
+T('$ ','java -jar TaskManagerApp-1.0-SNAPSHOT.jar'), P(900),
+L(HD,'========================================'),
+L(HD,' Personal Task Management System'),
+L(HD,' SOEN 342 - Winter 2026'),
+L(HD,'========================================'),
+P(500),
+...MM, T('Choice: ','5'), P(300),   // straight to Search to prove persistence
+NL(),L(OU,'--- SEARCH & VIEW TASKS ---'),
+L(OU,'(Press Enter on any filter to skip it)'),
+T('Keyword (title/description match): ',''), P(80),
+T('Status (OPEN/COMPLETED/CANCELLED): ',''), P(80),
+T('Priority (LOW/MEDIUM/HIGH): ',''), P(80),
+T('Project name: ',''), P(80),
+T('Tag name: ',''), P(80),
+T('From date (yyyy-MM-dd): ',''), P(80),
+T('To date (yyyy-MM-dd): ',''), P(80),
+T('Day of week (MON/TUE/WED/THU/FRI/SAT/SUN): ',''), P(80),
+T('Order by (duedate/priority/status/title, default=duedate): ',''), P(300),
+NL(),L(OU,'--- Results (7 tasks) ---'),
+L(NF,'Task #1: Soen342-Project [OPEN, HIGH] due 2026-04-13 | Project: project1 | Tags: #School '),
+L(NF,'Task #2: task1 [OPEN, LOW] due 2026-04-20 | Project: project1'),
+L(NF,'Task #3: Submit SOEN342 Project [OPEN, HIGH] due 2026-04-20 | Project: SOEN-342-Final | Tags: #School '),
+L(OU,' Progress: 0/1 subtasks done'),
+L(NF,'Task #6: Write Unit Tests [OPEN, MEDIUM] due 2026-04-22 | Project: SOEN-342-Final'),
+L(NF,'Task #5: Design Database Schema [OPEN, HIGH] due 2026-04-25 | Project: SOEN-342-Final'),
+L(OU,' Progress: 0/1 subtasks done'),
+L(NF,'Task #7: Deploy to AWS [OPEN, LOW] due 2026-05-01 | Project: DevOps Sprint'),
+L(NF,'Task #4: Weekly Team Standup [OPEN, MEDIUM] | Recurring'),
+NL(),T('Export results to CSV? (y/n): ','n'), P(200),
+P(900),
+
+];
+
+// ─── Index section start positions ───────────────────────────────────────────
+const SEC_STARTS={};
+SCRIPT.forEach((ev,i)=>{ if(ev[0]==='S') SEC_STARTS[ev[1]]=i; });
+
+// ─── Build pills ──────────────────────────────────────────────────────────────
+const pillsDiv=document.getElementById('pills');
+SECS.forEach(([id,nm])=>{
+  const b=document.createElement('button');
+  b.className='pill'; b.textContent=nm; b.id='pl'+id;
+  b.onclick=()=>jumpTo(id);
+  pillsDiv.appendChild(b);
+});
+
+// ─── State ────────────────────────────────────────────────────────────────────
+const tb   = document.getElementById('tb');
+const slab = document.getElementById('slab');
+const pf   = document.getElementById('pf');
+const vtxt = document.getElementById('vtxt');
+const vdot = document.getElementById('vdot');
+
+let pos=0, playing=false, speed=1;
+let scriptTimer=null, typeTimer=null;
+let curSec=1, muted=false;
+let currentAudio=null;
+
+// ─── Audio helpers ────────────────────────────────────────────────────────────
+function isAudioPlaying(){
+  return currentAudio && !currentAudio.paused && !currentAudio.ended;
+}
+function stopAudio(){
+  if(currentAudio){
+    currentAudio.pause();
+    currentAudio.onended=null; currentAudio.onerror=null;
+    currentAudio=null;
+  }
+  vdot.className='vdot';
+}
+function playAudio(secId, narText){
+  stopAudio();
+  if(muted) return;
+  const audio=new Audio(`audio/nar${secId}.mp3`);
+  currentAudio=audio;
+  vtxt.textContent=narText;
+  vdot.className='vdot pulse';
+  audio.onended=()=>{ vdot.className='vdot'; currentAudio=null; };
+  audio.onerror=()=>{ vdot.className='vdot'; currentAudio=null; };
+  audio.play().catch(()=>{ vdot.className='vdot'; currentAudio=null; });
+}
+
+// ─── Terminal helpers ─────────────────────────────────────────────────────────
+function setSection(id,nm){
+  curSec=id; slab.textContent=nm;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));
+  const p=document.getElementById('pl'+id);
+  if(p){ p.classList.add('on'); p.scrollIntoView({block:'nearest',inline:'nearest'}); }
+}
+function clearTerm(){ tb.innerHTML=''; }
+
+function addLine(cls,text){
+  const div=document.createElement('div'); div.className='tl';
+  const s=document.createElement('span'); s.className=cls; s.textContent=text;
+  div.appendChild(s); tb.appendChild(div);
+  tb.scrollTop=tb.scrollHeight;
+  pf.style.width=Math.min(100,(pos/SCRIPT.length)*100)+'%';
+}
+
+function addIdleCursor(){
+  const d=document.createElement('div'); d.className='tl';
+  const c=document.createElement('span'); c.className='cur'; d.appendChild(c);
+  tb.appendChild(d); tb.scrollTop=tb.scrollHeight;
+}
+
+function startTyping(prompt,input,done){
+  const div=document.createElement('div'); div.className='tl';
+  const ps=document.createElement('span'); ps.className='pr'; ps.textContent=prompt;
+  const is=document.createElement('span'); is.className='inp';
+  const cur=document.createElement('span'); cur.className='cur';
+  div.appendChild(ps); div.appendChild(is); div.appendChild(cur);
+  tb.appendChild(div); tb.scrollTop=tb.scrollHeight;
+  let i=0;
+  function next(){
+    if(i>=input.length){ cur.remove(); done(); return; }
+    is.textContent+=input[i++]; tb.scrollTop=tb.scrollHeight;
+    typeTimer=setTimeout(next, 44/speed);
+  }
+  if(!input.length) typeTimer=setTimeout(()=>{ cur.remove(); done(); }, 80/speed);
+  else next();
+}
+
+// Wait for current MP3 to finish before advancing past a section boundary
+function waitForAudioEnd(fn){
+  function poll(){
+    if(!playing) return;
+    if(!isAudioPlaying()) scriptTimer=setTimeout(fn, 350);
+    else scriptTimer=setTimeout(poll, 150);
+  }
+  poll();
+}
+
+// ─── Main event loop ──────────────────────────────────────────────────────────
+function tick(){
+  if(!playing||pos>=SCRIPT.length){
+    if(pos>=SCRIPT.length){ pf.style.width='100%'; addIdleCursor(); }
+    return;
+  }
+  const ev=SCRIPT[pos], type=ev[0];
+
+  if(type==='S'){
+    // Wait for narration audio to finish before clearing the terminal
+    if(isAudioPlaying()){
+      waitForAudioEnd(()=>{ pos++; clearTerm(); setSection(ev[1],ev[2]); sched(120); });
+    } else {
+      pos++; clearTerm(); setSection(ev[1],ev[2]); sched(120);
+    }
+  } else if(type==='V'){
+    playAudio(curSec, ev[1]); pos++; sched(0);
+  } else if(type==='L'){
+    pos++; addLine(ev[1],ev[2]); sched(28);
+  } else if(type==='T'){
+    pos++; startTyping(ev[1],ev[2], ()=>sched(140));
+  } else if(type==='P'){
+    pos++; sched(ev[1]);
+  }
+}
+
+function sched(ms){ if(!playing) return; scriptTimer=setTimeout(tick, ms/speed); }
+
+// ─── Controls ─────────────────────────────────────────────────────────────────
+function pauseResume(){
+  playing=!playing;
+  document.getElementById('bplay').innerHTML=playing?'&#9646;&#9646; pause':'&#9654; play';
+  if(playing) sched(0);
+  else { clearTimeout(scriptTimer); clearTimeout(typeTimer); stopAudio(); }
+}
+
+function jumpTo(id){
+  clearTimeout(scriptTimer); clearTimeout(typeTimer); stopAudio();
+  const si=SEC_STARTS[id]; if(si===undefined) return;
+  pos=si; clearTerm(); vtxt.textContent='';
+  const s=SECS.find(x=>x[0]===id);
+  if(s) setSection(s[0],s[1]);
+  if(!playing){ playing=true; document.getElementById('bplay').innerHTML='&#9646;&#9646; pause'; }
+  sched(200);
+}
+
+document.getElementById('bplay').onclick=pauseResume;
+document.getElementById('bprev').onclick=()=>jumpTo(Math.max(1,curSec-1));
+document.getElementById('bnext').onclick=()=>jumpTo(Math.min(10,curSec+1));
+document.querySelectorAll('.spd').forEach(b=>{
+  b.onclick=()=>{
+    speed=parseInt(b.dataset.v);
+    document.querySelectorAll('.spd').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+  };
+});
+document.getElementById('bmute').onclick=()=>{
+  muted=!muted;
+  document.getElementById('bmute').classList.toggle('muted',muted);
+  if(muted){ stopAudio(); vtxt.textContent='(voice muted)'; }
+};
+</script>
+</body>
+</html>

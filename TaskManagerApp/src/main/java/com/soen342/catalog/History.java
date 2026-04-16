@@ -3,6 +3,7 @@ package com.soen342.catalog;
 import com.soen342.model.ActivityEntry;
 import com.soen342.model.Task;
 import com.soen342.persistence.DBUtil;
+import com.soen342.persistence.TDG.ActivityEntryTDG;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,12 +20,16 @@ public class History {
     public void record(ActivityEntry entry) {
         allEntries.add(entry);
         try{
-            DBUtil.saveActivityEntry(entry);
+            ActivityEntryTDG.save(entry);
         } catch (SQLException e){
             throw new RuntimeException("Failed to save activity entry, operation aborted.", e);
         }
     }
 
+    //raw data setting - bypasses business logic
+    public void loadEntryFromDataStore(ActivityEntry entry) {
+        allEntries.add(entry);
+    }
     /**
      * Returns the full activity history for a specific task.
      */
@@ -46,8 +51,4 @@ public class History {
         history.forEach(System.out::println);
     }
 
-    //raw data setting - bypasses business logic
-    public void recordRaw(ActivityEntry entry) {
-        allEntries.add(entry);
-    }
 }
