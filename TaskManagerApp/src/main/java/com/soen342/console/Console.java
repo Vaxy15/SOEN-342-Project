@@ -864,7 +864,7 @@ public class Console {
     // =========================================================================
 
     private Task promptTaskById() {
-        System.out.println("\n--- TASKS ---");
+        System.out.println("\n--- CHOOSE A TASK ---");
         taskCatalog.getAllTasks().forEach(System.out::println);
         System.out.print("Task ID: ");
         try {
