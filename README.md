@@ -7,6 +7,15 @@
 |M-Amar Kseibi    | 40276594   |
 |Ariberto Bello Veras    | 40319600    |
 
+## *Note for graders*
+
+A merge conflict resolution caused the main branch history to be temporarily broken <br/>
+It was fixed by resetting history and replaying the commits one by one. <br/>
+this caused all commits passed commit #[4faca8f](../../commit/4faca8f) to appear to be made by the same person even though they are not. <br/>
+This means the github insights doesnt accurately count the contributions of each member to main. <br/>
+The original state has been preserved in the [broken-main-copy](../../tree/broken-main-copy) branch for reference. <br/>
+To see the original authors of the commits passed commit #[4faca8f](../../commit/4faca8f) refer to that branch 
+
 
 ## Deliverables
 
