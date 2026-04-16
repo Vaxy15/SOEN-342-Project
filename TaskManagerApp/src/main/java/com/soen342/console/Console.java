@@ -282,8 +282,8 @@ public class Console {
             catch (DateTimeParseException e) { System.out.println("[Warning] Invalid date ignored."); }
         }
 
-        task.setTitle(title.isBlank() ? null : title);
-        task.setDescription(desc.isBlank() ? null : desc);
+        task.setTitle(title.isBlank() ? task.getTitle() : title);
+        task.setDescription(desc.isBlank() ? task.getDescription() : desc);
         task.setPriority(priority == null ? task.getPriority() : priority);
         task.setDueDate(dueDate == null ? task.getDueDate() : dueDate);
         System.out.println("[OK] Task updated:\n" + task);
